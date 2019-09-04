@@ -1,0 +1,308 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Xa11ytaire"
+             xmlns:local_classes="clr-namespace:Xa11ytaire.Source.Classes"
+             xmlns:i18n="clr-namespace:Xa11ytaire;assembly=Xa11ytaire"             
+             x:Class="Xa11ytaire.MainPage">
+    <Page.Resources>
+
+        <local_classes:IsFaceDownToIsEnabledConverter x:Key="IsFaceDownToIsEnabledConverter" />
+        <local_classes:IsFaceDownToVisibilityConverter x:Key="IsFaceDownToVisibilityConverter" />
+        <local_classes:CardToCardImageConverter x:Key="CardToCardImageConverter" />
+        <local_classes:NextCardIsEmptyToImageConverter x:Key="NextCardIsEmptyToImageConverter" />
+        <local_classes:IsObscuredToHeightConverter x:Key="IsObscuredToHeightConverter" />
+        <local_classes:UpturnedCardToVisibilityConverter x:Key="UpturnedCardToVisibilityConverter" />
+        <local_classes:IsToggledToBorderColorConverter x:Key="IsToggledToBorderColorConverter" />
+        <local_classes:IsSelectedToPaddingConverter x:Key="IsSelectedToPaddingConverter" />
+        <local_classes:IsFaceDownToBackgroundColorConverter x:Key="IsFaceDownToBackgroundColorConverter" />
+        <local_classes:IsFaceDownToCountLabelVisibilityConverter x:Key="IsFaceDownToCountLabelVisibilityConverter" />
+
+        <ResourceDictionary>
+            <Style TargetType="local_classes:CardPileToggleButton">
+                <Setter Property="BackgroundColor" Value="DarkMagenta" />
+                <Setter Property="Margin" Value="0" />
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList x:Name="CommonStates">
+                        <VisualStateGroup>
+                            <VisualState x:Name="ToggledOn">
+                                <VisualState.Setters>
+                                    <Setter Property="Padding" Value="6" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="ToggledOff">
+                                <VisualState.Setters>
+                                    <Setter Property="Padding" Value="0" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    
+        <DataTemplate x:Key="PlayingCardListViewTemplate" 
+            x:DataType="local_classes:PlayingCard">
+            <ViewCell IsEnabled="{Binding FaceDown, Mode=OneWay, 
+                Converter={StaticResource IsFaceDownToIsEnabledConverter}}">
+                <Grid Margin="0"
+                    BackgroundColor="DarkMagenta"
+                    IsVisible="{Binding IsCardVisible, Mode=OneWay}"
+                    Padding="{Binding IsSelected, Mode=OneWay,
+                      Converter={StaticResource IsSelectedToPaddingConverter}}"
+                    AutomationProperties.IsInAccessibleTree="False"
+                    AutomationProperties.Name="{Binding Name, Mode=OneWay}"
+                    AutomationProperties.HelpText="{Binding HelpText, Mode=OneWay}">
+                    <StackLayout Margin="0" Padding="0"
+                            AutomationProperties.IsInAccessibleTree="False"
+                            HeightRequest="{Binding IsObscured, Mode=OneWay,
+                                Converter={StaticResource IsObscuredToHeightConverter}}">
+                        <Image Aspect="AspectFit" Margin="0" 
+                               AutomationProperties.IsInAccessibleTree="False"
+                                IsVisible="{Binding FaceDown, Mode=OneWay, 
+                                    Converter={StaticResource IsFaceDownToVisibilityConverter}}">
+                            <Image.Source>
+                                <FileImageSource File="{Binding Card, Mode=OneWay, 
+                                    Converter={StaticResource CardToCardImageConverter}}" />
+                            </Image.Source>
+                        </Image>
+                        <Image Aspect="AspectFit" Margin="0" 
+                               AutomationProperties.IsInAccessibleTree="False"
+                                IsVisible="{Binding FaceDown, Mode=OneWay}">
+                            <Image.Source>
+                                 <!--Barker: Replace this with whatever replaced the deprecated OnPlatform.--> 
+                                <OnPlatform x:TypeArguments="FileImageSource">
+                                    <On Platform="iOS">cardback.png</On>
+                                    <On Platform="UWP">Assets/Images/cardback.png</On>
+                                </OnPlatform>
+                            </Image.Source>
+                        </Image>
+                    </StackLayout>
+
+                    <!--IsVisible="{Binding IsCardVisible, Mode=OneWay}"-->
+                    <Frame 
+                        BackgroundColor="{Binding FaceDown, Mode=OneWay,
+                            Converter={StaticResource IsFaceDownToBackgroundColorConverter}}" 
+                        AutomationProperties.IsInAccessibleTree="False"
+                        CornerRadius="0" Margin="0" Padding="0">
+                        <Label Text="{Binding FaceDownCount, Mode=OneWay}" 
+                            IsVisible="{Binding FaceDown, Mode=OneWay, 
+                                Converter={StaticResource IsFaceDownToCountLabelVisibilityConverter}}"
+                            HorizontalTextAlignment="End"
+                            FontAttributes="Bold"
+                            AutomationProperties.IsInAccessibleTree="False"
+                            HorizontalOptions="Center" VerticalOptions="Center"
+                            />
+                    </Frame>
+                </Grid>
+            </ViewCell>
+        </DataTemplate>
+
+    </Page.Resources>
+
+    <Grid BackgroundColor="Green" Padding="4,10,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        <StackLayout Grid.Row="0" Orientation="Horizontal" x:Name="TopCornerPiles"  
+            Margin="0" Padding="0" x:Uid="TopCornerPilesLandmark">
+
+            <!--The approach for localization here was following the steps at:
+            https://docs.microsoft.com/en-us/xamarin/xamarin-forms/app-fundamentals/localization/text?tabs=windows#localizing-xaml-->
+
+            <!--Source="Assets/Images/cardback.png"-->
+            <!--Source="{Binding RemainingCardPileImage, Mode=OneWay}"-->
+            <!--AutomationProperties.Name="{i18n:TranslateExtension Text=NextCard}"-->
+
+            <!-- Remaining card pile. -->
+            <Grid Margin="0" Padding="0" x:Name="NextCardPileGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <local_classes:NextCardPileButton x:Name="NextCardDeck" 
+                    Clicked="NextCardDeck_Clicked"
+                    BorderWidth="1" 
+                    Aspect="Fill"
+                    BackgroundColor="#0ED145" BorderColor="Black"
+                    Margin="0" Padding="0">
+                </local_classes:NextCardPileButton>
+            </Grid>
+
+            <!-- Upturned cards area. -->
+            <Grid x:Name="UpturnedCardsGrid" ColumnSpacing="1" Margin="0,0,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <local_classes:CardPileToggleButton x:Name="CardDeckUpturnedObscuredLower" Grid.Column="0"
+                    AutomationProperties.Name="{Binding CardPileAccessibleName, Mode=OneWay}"
+                    IsEnabled="False" 
+                    Aspect="Fill"
+                    IsVisible="{Binding Card, Mode=OneWay, 
+                        Converter={StaticResource UpturnedCardToVisibilityConverter}}"
+                    Source="{Binding CardPileImage, Mode=OneWay}"
+                    x:Uid="CardDeckUpturnedObscuredLower">
+                </local_classes:CardPileToggleButton>
+                <local_classes:CardPileToggleButton x:Name="CardDeckUpturnedObscuredHigher" Grid.Column="1"
+                    AutomationProperties.Name="{Binding CardPileAccessibleName, Mode=OneWay}"
+                    IsEnabled="False" 
+                    Aspect="Fill"
+                    IsVisible="{Binding Card, Mode=OneWay, 
+                        Converter={StaticResource UpturnedCardToVisibilityConverter}}"
+                    Source="{Binding CardPileImage, Mode=OneWay}"
+                    x:Uid="CardDeckUpturnedObscuredHigher">
+                </local_classes:CardPileToggleButton>
+                <local_classes:CardPileToggleButton x:Name="CardDeckUpturned" x:Uid="CardDeckUpturned" Grid.Column="2"
+                    AutomationProperties.Name="{Binding CardPileAccessibleName, Mode=OneWay}"
+                    Aspect="Fill"
+                    Source="{Binding CardPileImage, Mode=OneWay}"                                                     
+                    IsVisible="{Binding Card, Mode=OneWay, 
+                        Converter={StaticResource UpturnedCardToVisibilityConverter}}"
+                    IsEnabled="False" 
+                    Toggled="CardDeckUpturned_Toggled">
+                </local_classes:CardPileToggleButton>
+            </Grid>
+
+            <!-- Target cards piles. -->
+            <Grid x:Name="TargetPiles" x:Uid="TargetPilesLandmark" Margin="40,0,0,0" Padding="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Show the status of Azure speech input. -->
+                <!--<Label Grid.ColumnSpan="4" x:Name="SpeechInputStatus"/>-->
+
+                <local_classes:CardPileToggleButton Grid.Column="0" x:Name="TargetPileC" x:Uid="TargetPileC"
+                    Suit="Clubs" 
+                    Aspect="Fill"
+                    Source="{Binding CardPileImage, Mode=OneWay}"
+                    AutomationProperties.Name="{Binding CardPileAccessibleName, Mode=OneWay}"
+                    Toggled="TargetPile_Toggled">
+                </local_classes:CardPileToggleButton>
+                <local_classes:CardPileToggleButton Grid.Column="1" x:Name="TargetPileD" x:Uid="TargetPileD"                
+                    Suit="Diamonds" 
+                    Aspect="Fill"
+                    Source="{Binding CardPileImage, Mode=OneWay}"                                                     
+                    AutomationProperties.Name="{Binding CardPileAccessibleName, Mode=OneWay}"
+                    Toggled="TargetPile_Toggled"
+                    >
+                </local_classes:CardPileToggleButton>
+                <local_classes:CardPileToggleButton Grid.Column="2" x:Name="TargetPileH" x:Uid="TargetPileH"
+                    Suit="Hearts" 
+                    Aspect="Fill"
+                    Source="{Binding CardPileImage, Mode=OneWay}"                                                     
+                    AutomationProperties.Name="{Binding CardPileAccessibleName, Mode=OneWay}"
+                    Toggled="TargetPile_Toggled"
+                    >
+                </local_classes:CardPileToggleButton>
+                <local_classes:CardPileToggleButton Grid.Column="3" x:Name="TargetPileS" x:Uid="TargetPileS"
+                    Suit="Spades" 
+                    Aspect="Fill"
+                    Source="{Binding CardPileImage, Mode=OneWay}"                                                     
+                    AutomationProperties.Name="{Binding CardPileAccessibleName, Mode=OneWay}"
+                    Toggled="TargetPile_Toggled"
+                    >
+                </local_classes:CardPileToggleButton>
+            </Grid>
+        </StackLayout>
+        
+        <Grid Grid.Row="1">
+
+            <StackLayout>
+                <Label x:Name="DealtCardPileState" 
+                    AutomationProperties.IsInAccessibleTree="True"
+                    WidthRequest="1" MinimumWidthRequest="1"
+                    HeightRequest="1" MinimumHeightRequest="1"
+                    Text="Dealt cards state" />
+
+                <!-- Dealt cards pile. -->
+                <Grid x:Name="CardPileGrid">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <ListView x:Name="CardPile1" x:Uid="CardPile1" Grid.Row="0" Grid.Column="0" RowHeight="-1"
+                        AutomationProperties.Name="{i18n:TranslateExtension Text=Pile1}" ItemTemplate="{StaticResource PlayingCardListViewTemplate}" 
+                        Margin="0"
+                        ItemSelected="CardPile_SelectionChanged" HasUnevenRows="True">
+                    </ListView>
+
+                    <ListView x:Name="CardPile2" x:Uid="CardPile2" Grid.Row="0" Grid.Column="1" RowHeight="-1"
+                        AutomationProperties.Name="{i18n:TranslateExtension Text=Pile2}" ItemTemplate="{StaticResource PlayingCardListViewTemplate}" 
+                        Margin="0" 
+                        ItemSelected="CardPile_SelectionChanged" HasUnevenRows="True">
+                    </ListView>
+
+                    <ListView x:Name="CardPile3" x:Uid="CardPile3" Grid.Row="0" Grid.Column="2" RowHeight="-1"
+                        AutomationProperties.Name="{i18n:TranslateExtension Text=Pile3}" ItemTemplate="{StaticResource PlayingCardListViewTemplate}" 
+                        Margin="0"                      
+                        ItemSelected="CardPile_SelectionChanged" HasUnevenRows="True">
+                    </ListView>
+
+                    <ListView x:Name="CardPile4" x:Uid="CardPile4" Grid.Row="0" Grid.Column="3" RowHeight="-1"
+                        AutomationProperties.Name="{i18n:TranslateExtension Text=Pile4}" ItemTemplate="{StaticResource PlayingCardListViewTemplate}" 
+                        Margin="0"                       
+                        ItemSelected="CardPile_SelectionChanged" HasUnevenRows="True">
+                    </ListView>
+
+                    <ListView x:Name="CardPile5" x:Uid="CardPile5" Grid.Row="0" Grid.Column="4" RowHeight="-1"
+                        AutomationProperties.Name="{i18n:TranslateExtension Text=Pile5}" ItemTemplate="{StaticResource PlayingCardListViewTemplate}" 
+                        Margin="0"                       
+                        ItemSelected="CardPile_SelectionChanged" HasUnevenRows="True">
+                    </ListView>
+
+                    <ListView x:Name="CardPile6" x:Uid="CardPile6" Grid.Row="0" Grid.Column="5" RowHeight="-1"
+                        AutomationProperties.Name="{i18n:TranslateExtension Text=Pile6}" ItemTemplate="{StaticResource PlayingCardListViewTemplate}"
+                        Margin="0"                       
+                        ItemSelected="CardPile_SelectionChanged" HasUnevenRows="True">
+                    </ListView>
+
+                    <StackLayout Grid.Row="0" Grid.Column="6" 
+                                 Margin="0,0,10,0">
+
+                        <ListView x:Name="CardPile7" x:Uid="CardPile7" 
+                            RowHeight="-1"
+                            AutomationProperties.Name="{i18n:TranslateExtension Text=Pile7}" ItemTemplate="{StaticResource PlayingCardListViewTemplate}"
+                            Margin="0,0,0,0"                       
+                            ItemSelected="CardPile_SelectionChanged" HasUnevenRows="True">
+                        </ListView>
+
+                        <Button Text="&#x21bb;" FontSize="Large" FontAttributes="Bold"
+                            AutomationProperties.Name="Restart" 
+                            Clicked="RestartButton_Clicked" Margin="0" Padding="0,0,0,6" 
+                            VerticalOptions="End" />
+
+                    </StackLayout> 
+                </Grid>
+            </StackLayout>
+            
+            <!--<StackLayout Orientation="Horizontal" Margin="0,0,0,10">-->
+            <!--<Button Text="&#x21bb;" FontSize="Large" FontAttributes="Bold"
+                AutomationProperties.Name="Restart" 
+                    WidthRequest="50" HeightRequest="50"
+                    Clicked="RestartButton_Clicked" Margin="0,0,10,10"
+                    HorizontalOptions="End" />-->
+                <!--<Button x:Name="TakePhoto" Text="Move by image reco" Clicked="TakePhoto_Clicked" 
+                        BackgroundColor="White" />-->
+                <!--<Label x:Name="CardRecoStatus" Margin="20,0,0,0" WidthRequest="300" 
+                    TextColor="White" VerticalOptions="Center"/>
+            </StackLayout>-->
+
+        </Grid>
+
+    </Grid>
+
+</ContentPage>

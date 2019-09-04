@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.GuyBarker.Xa11ytaire" android:installLocation="auto" android:versionName="8.0" android:versionCode="8">
+	<uses-sdk android:minSdkVersion="28" android:targetSdkVersion="28" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+	<application android:label="Xa11ytaire.Android" android:icon="@drawable/heartsjack">
+		<provider android:name="android.support.v4.content.FileProvider" android:authorities="com.companyname.Xa11ytaire.fileprovider" android:exported="false" android:grantUriPermissions="true">
+			<meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths"></meta-data>
+		</provider>
+	</application>
+</manifest>
