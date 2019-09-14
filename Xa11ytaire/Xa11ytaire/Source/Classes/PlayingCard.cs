@@ -200,6 +200,18 @@ namespace Xa11ytaire.Source.Classes
 
         public int ListIndex { get; set; }
 
+        private int visibleRowIndex = 0;
+
+        public int VisibleRowIndex
+        {
+            get { return visibleRowIndex; }
+            set
+            {
+                visibleRowIndex = value;
+                OnPropertyChanged("HelpText");
+            }
+        }
+
         public Suit Suit
         {
             get => Card.Suit;
@@ -242,6 +254,10 @@ namespace Xa11ytaire.Source.Classes
                 if (!this.FaceDown && (this.Card.Rank == 0))
                 {
                     helpText = Resource1.EmptyCardHelpText;
+                }
+                else
+                {
+                    helpText = "Row " + this.VisibleRowIndex;
                 }
 
                 return helpText;

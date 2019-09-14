@@ -431,6 +431,12 @@ namespace Xa11ytaire
 
         private void CardDeckUpturned_Toggled(object sender, ToggledEventArgs e)
         {
+            // Only act when the upturned card is toggled On.
+            if (!e.Value)
+            {
+                return;
+            }
+
             if (_deckUpturned.Count > 0)
             {
                 // Always deselect all dealt cards and the target card piles 
@@ -438,10 +444,13 @@ namespace Xa11ytaire
                 DeselectDealtCards();
                 UncheckToggleButtons(false);
 
-                //string upturnedAnnouncement =
-                //    Resource1.Upturned + " " +
-                //    CardDeckUpturned.Card.ToString() + " " +
-                //    Resource1.Selected + ".";
+                string upturnedAnnouncement =
+                    Resource1.Upturned + " " +
+                    CardDeckUpturned.Card.ToString() + " " +
+                    Resource1.Selected + ".";
+
+                RaiseNotificationEvent(
+                     upturnedAnnouncement);
 
                 //RaiseNotificationEvent(
                 //    AutomationNotificationKind.ActionCompleted,
@@ -449,8 +458,6 @@ namespace Xa11ytaire
                 //     upturnedAnnouncement,
                 //     NotificationActivityID_Default,
                 //     NextCardDeck);
-
-                //RaiseNotificationEvent(upturnedAnnouncement);
 
                 if (this.ViewModel.SingleKeyToMove)
                 {
@@ -461,6 +468,8 @@ namespace Xa11ytaire
 
         private void RaiseNotificationEvent(string notification)
         {
+            Debug.WriteLine("Announced: \"" + notification + "\"");
+
             var service = DependencyService.Get<IXa11ytairePlatformAction>();
             service.ScreenReaderAnnouncement(notification);
         }
@@ -489,10 +498,10 @@ namespace Xa11ytaire
         }
     }
 
-    // The code below was copied from:
-    // https://docs.microsoft.com/en-us/xamarin/xamarin-forms/app-fundamentals/localization/text?tabs=windows
+// The code below was copied from:
+// https://docs.microsoft.com/en-us/xamarin/xamarin-forms/app-fundamentals/localization/text?tabs=windows
 
-    public interface ILocalize
+public interface ILocalize
     {
         CultureInfo GetCurrentCultureInfo();
         void SetLocale(CultureInfo ci);

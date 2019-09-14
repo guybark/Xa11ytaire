@@ -238,6 +238,18 @@ namespace Xa11ytaire
 
                     SetUpturnedCardsVisuals();
 
+                    var suitName = _targetPiles[index][0].Suit.ToString();
+
+                    var announcement =
+                        Resource1.Moved + " " +
+                        cardAbove.Name + " " +
+                        Resource1.To + " " +
+                        suitName + " " +
+                        Resource1.Pile + ". ";
+
+                    RaiseNotificationEvent(
+                         announcement);
+
                     PlaySound(true);
                 }
                 else
@@ -501,6 +513,8 @@ namespace Xa11ytaire
                                 SetCardDetails(null, cardAbove);
                             }
 
+                            cardRevealedAnnouncement = cardAbove.Name;
+
                             setButtonVisuals = true;
 
                             PlaySound(true);
@@ -538,14 +552,24 @@ namespace Xa11ytaire
                         //btn.Focus(FocusState.Keyboard);
 
                         // Have screen readers make a related announcement.
-                        string ttsText =
+
+                        var suitName = _targetPiles[targetListIndex][0].Suit.ToString();
+
+                        var announcement =
+                            Resource1.Moved + " " +
+                            card.ToString() + " " +
+                            Resource1.To + " " +
+                            suitName + " " +
+                            Resource1.Pile + ". ";
+
+                        announcement += 
                             revealedString + " " +
                             cardRevealedAnnouncement +
                             " " + inDealtCardPile + " " +
                             (i + 1) + ".";
 
                         RaiseNotificationEvent(
-                             ttsText);
+                             announcement);
 
                         //RaiseNotificationEvent(
                         //     AutomationNotificationKind.ItemAdded,
@@ -587,6 +611,10 @@ namespace Xa11ytaire
                 {
                     TargetPileS.IsToggled = false;
                 }
+
+                var announcement = btn.Name + " " + Resource1.Selected;
+
+                RaiseNotificationEvent(announcement);
             }
         }
 
@@ -681,6 +709,15 @@ namespace Xa11ytaire
                     EnableCard(cardAbove, true);
 
                     _deckUpturned.Remove(cardAbove.Card);
+
+                    var announcement =
+                        Resource1.Moved + " " +
+                        cardAbove.Name + " " +
+                        Resource1.To + " " +
+                        cardBelow.Name + ".";
+
+                    RaiseNotificationEvent(
+                         announcement);
 
                     SetUpturnedCardsVisuals();
 
@@ -1001,6 +1038,15 @@ namespace Xa11ytaire
 
                         EnableCard(cardAbove, true);
 
+                        var announcement =
+                            Resource1.Moved + " " +
+                            cardAbove.Name + " " +
+                            Resource1.To + " " +
+                            cardBelow.Name + ". ";
+
+                        RaiseNotificationEvent(
+                             announcement);
+
                         //listCardPile.Focus(FocusState.Keyboard);
 
                         if (listTargetPile.Count == 0)
@@ -1030,11 +1076,6 @@ namespace Xa11ytaire
         private void MoveCardBetweenDealtCardPiles(ListView listSelectionChanged)
         {
             bool foundOtherDealtCardPileSelected = false;
-
-            // XBarker
-            //var resourceLoader = new Windows.ApplicationModel.Resources.ResourceLoader();
-            //string inDealtCardPile = resourceLoader.GetString("InDealtCardPile");
-            //string revealedString = resourceLoader.GetString("Revealed");
 
             // Is any card selected in another CardPile list?
             for (int i = 0; i < cCardPiles; i++)
@@ -1211,14 +1252,20 @@ namespace Xa11ytaire
                                 var topCard = itemsRemoved[sourceItemsCount - 1];
                                 var cardRevealedAnnouncement = topCard.Name;
 
-                                string ttsText =
+                                var announcement =
+                                    Resource1.Moved + " " +
+                                    newCard.Name + " " +
+                                    Resource1.To + " " +
+                                    cardBelow.Name + ". ";
+
+                                announcement +=
                                     Resource1.Revealed + " " +
                                     cardRevealedAnnouncement +
                                     " " + Resource1.InDealtCardPile + " " +
                                     (i + 1) + ".";
 
                                 RaiseNotificationEvent(
-                                     ttsText);
+                                     announcement);
                             }
                         }
                         else if (!cardHasBeenMoved)
@@ -1261,6 +1308,11 @@ namespace Xa11ytaire
 
             if (!foundOtherDealtCardPileSelected)
             {
+                // Have TalkBack announce the selection of the card.
+                var cardSelected = listSelectionChanged.SelectedItem as PlayingCard;
+                var announcement = cardSelected.Name + " " + Resource1.Selected;
+                RaiseNotificationEvent(announcement);
+
                 // A dealt card was selected, but no available move was found, and no other
                 // dealt card pile was found to be selected. So check if we should move with 
                 // only this card selection.
@@ -1451,9 +1503,11 @@ namespace Xa11ytaire
 
                 for (int j = items.Count - 1; j >= 0; j--)
                 {
+                    var playingcard = (items[j] as PlayingCard);
+
                     if (j == items.Count - 1)
                     {
-                        if ((items[j] as PlayingCard).CardState == CardState.KingPlaceHolder)
+                        if (playingcard.CardState == CardState.KingPlaceHolder)
                         {
                             stateMessage += empty;
                         }
@@ -1464,8 +1518,6 @@ namespace Xa11ytaire
                     }
                     else
                     {
-                        var playingcard = (items[j] as PlayingCard);
-
                         if (playingcard.FaceDown)
                         {
                             cFaceDown = playingcard.FaceDownCount;
@@ -1488,6 +1540,20 @@ namespace Xa11ytaire
                 {
                     stateMessage += cFaceDown + " " +
                         (cFaceDown > 1 ? cards : card) + " " + facedown + " , ";
+                }
+
+                // While we're here, set the row index for the cards, (1-based).
+                for (int j = 0; j < items.Count; ++j)
+                {
+                    var playingcard = (items[j] as PlayingCard);
+                    if (playingcard.FaceDown)
+                    {
+                        playingcard.VisibleRowIndex = 1;
+                    }
+                    else
+                    {
+                        playingcard.VisibleRowIndex = j + 1;
+                    }
                 }
             }
 

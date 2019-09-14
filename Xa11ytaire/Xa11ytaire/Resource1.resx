@@ -171,6 +171,9 @@
   <data name="King" xml:space="preserve">
     <value>King</value>
   </data>
+  <data name="Moved" xml:space="preserve">
+    <value>Moved</value>
+  </data>
   <data name="NextCard" xml:space="preserve">
     <value>Next cards</value>
   </data>
@@ -188,6 +191,9 @@
   </data>
   <data name="OnTop" xml:space="preserve">
     <value>on top</value>
+  </data>
+  <data name="Pile" xml:space="preserve">
+    <value>pile</value>
   </data>
   <data name="Pile1" xml:space="preserve">
     <value>Pile 1</value>
@@ -239,6 +245,9 @@
   </data>
   <data name="Three" xml:space="preserve">
     <value>3</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>to</value>
   </data>
   <data name="Two" xml:space="preserve">
     <value>2</value>

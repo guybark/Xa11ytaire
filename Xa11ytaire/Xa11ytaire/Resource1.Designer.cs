@@ -223,6 +223,15 @@ namespace Xa11ytaire {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Moved.
+        /// </summary>
+        internal static string Moved {
+            get {
+                return ResourceManager.GetString("Moved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Next cards.
         /// </summary>
         internal static string NextCard {
@@ -273,6 +282,15 @@ namespace Xa11ytaire {
         internal static string OnTop {
             get {
                 return ResourceManager.GetString("OnTop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pile.
+        /// </summary>
+        internal static string Pile {
+            get {
+                return ResourceManager.GetString("Pile", resourceCulture);
             }
         }
         
@@ -426,6 +444,15 @@ namespace Xa11ytaire {
         internal static string Three {
             get {
                 return ResourceManager.GetString("Three", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to to.
+        /// </summary>
+        internal static string To {
+            get {
+                return ResourceManager.GetString("To", resourceCulture);
             }
         }
         
