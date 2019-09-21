@@ -49,7 +49,16 @@ namespace Xa11ytaire
             if (_deckRemaining.Count > 0)
             {
                 // Yes, so how many cards can we turn over?
-                int countCardsToTurn = (_deckRemaining.Count >= 3 ? 3 : _deckRemaining.Count);
+                int countCardsToTurn;
+                
+                if (this.settings.TurnOverOneCard)
+                {
+                    countCardsToTurn = 1;
+                }
+                else
+                {
+                    countCardsToTurn = (_deckRemaining.Count >= 3 ? 3 : _deckRemaining.Count);
+                }
 
                 // Turn over each card in turn.
 

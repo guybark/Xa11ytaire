@@ -280,11 +280,25 @@
                             ItemSelected="CardPile_SelectionChanged" HasUnevenRows="True">
                         </ListView>
 
-                        <Button Text="&#x21bb;" FontSize="Large" FontAttributes="Bold"
-                            AutomationProperties.Name="Restart" 
-                            Clicked="RestartButton_Clicked" Margin="0" Padding="0,0,0,6" 
-                            VerticalOptions="End" />
+                        <!-- Barker: Uh. Any way to remove the hard-coded height? -->
+                        <Grid HeightRequest="160">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            
+                            <Button Grid.Column="0"
+                                Text="&#x2699;" FontSize="Large" FontAttributes="Bold"
+                                AutomationProperties.Name="Settings" 
+                                Clicked="SettingsButton_Clicked" 
+                                Margin="0" Padding="0,0,0,6" />
 
+                            <Button Grid.Column="1"
+                                Text="&#x21bb;" FontSize="Large" FontAttributes="Bold"
+                                AutomationProperties.Name="Restart" 
+                                Clicked="RestartButton_Clicked" 
+                                Margin="0" Padding="0,0,0,6" />
+                        </Grid>
                     </StackLayout> 
                 </Grid>
             </StackLayout>

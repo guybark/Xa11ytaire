@@ -12,6 +12,7 @@ using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media.Imaging;
 using Xa11ytaire.UWP;
+using Xamarin.Forms;
 
 [assembly: Xamarin.Forms.Dependency(typeof(Xa11ytairePlatformAction))]
 namespace Xa11ytaire.UWP
@@ -24,6 +25,26 @@ namespace Xa11ytaire.UWP
 
         // Barker: Local image reco not currently included:
         // private ObjectDetection objectDetection;
+
+        public Settings LoadSettings()
+        {
+            var settings = new Settings();
+
+            settings.TurnOverOneCard = false;
+
+            if (Application.Current.Properties.ContainsKey("TurnOverOneCard"))
+            {
+                settings.TurnOverOneCard = (bool)Application.Current.Properties["TurnOverOneCard"];
+            }
+
+            return settings;
+        }
+
+        public void SaveSettings(Settings settings)
+        {
+            Application.Current.Properties["TurnOverOneCard"] = 
+                settings.TurnOverOneCard;
+        }
 
         public void ScreenReaderAnnouncement(string notification)
         {

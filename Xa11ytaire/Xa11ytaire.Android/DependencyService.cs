@@ -34,6 +34,20 @@ namespace Xa11ytaire.Droid
 
         //private int inputSize;
 
+        public Settings LoadSettings()
+        {
+            var settings = new Settings();
+
+            // Barker: Load up Android settings here.
+
+            return settings;
+        }
+
+        public void SaveSettings(Settings settings)
+        {
+            // Barker: Save Android settings here.
+        }
+
         public void ScreenReaderAnnouncement(string notification)
         {
             if ((MainActivity.accessibilityManager != null) &&

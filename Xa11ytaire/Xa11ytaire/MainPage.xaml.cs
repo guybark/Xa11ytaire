@@ -22,6 +22,10 @@ namespace Xa11ytaire
 {
     public interface IXa11ytairePlatformAction
     {
+        Settings LoadSettings();
+
+        void SaveSettings(Settings settings);
+
         Task<string> LocalRecognizeImage(Stream imageStream);
 
         Task<bool> InitializeMicrophone();
@@ -62,11 +66,14 @@ namespace Xa11ytaire
 
         private bool cardHasBeenMoved = false;
 
+        private Settings settings;
+
         public MainPage()
         {
             InitializeComponent();
 
-            //Plugin.Media.CrossMedia.Current.Initialize();
+            var service = DependencyService.Get<IXa11ytairePlatformAction>();
+            this.settings = service.LoadSettings();
 
             this.ViewModel = new PlayingCardViewModel();
 
@@ -334,6 +341,13 @@ namespace Xa11ytaire
         private void RestartButton_Clicked(object sender, EventArgs e)
         {
             RestartGame(true);
+        }
+
+        private async void SettingsButton_Clicked(object sender, EventArgs e)
+        {
+            var settingsPage = new SettingsPage(this.settings);
+
+            await Navigation.PushModalAsync(settingsPage);
         }
 
         private void ClearUpturnedPileButton()
