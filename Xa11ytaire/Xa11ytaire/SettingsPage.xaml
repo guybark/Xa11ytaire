@@ -8,14 +8,34 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
-            <StackLayout Grid.Row="0" Orientation="Horizontal">
-                <CheckBox x:Name="TurnOverOneCardCheckBox" 
-                    AutomationProperties.LabeledBy="TurnOverOneCardCheckBoxLabel"
-                    WidthRequest="24"
-                    CheckedChanged="TurnOverOneCardCheckBox_CheckedChanged" />
-                <Label x:Name="TurnOverOneCardCheckBoxLabel"
-                    Text="Turn over remaining cards one at a time."
-                    VerticalTextAlignment="Center" />
+            <StackLayout Grid.Row="0">
+                <StackLayout Orientation="Horizontal">
+                    <CheckBox x:Name="ShowSuggestionsButtonCheckBox" 
+                        AutomationProperties.LabeledBy="ShowSuggestionsButtonCheckBoxLabel"
+                        WidthRequest="24"
+                        CheckedChanged="ShowSuggestionsButtonCheckBox_CheckedChanged" />
+                    <Label x:Name="ShowSuggestionsButtonCheckBoxLabel"
+                        Text="Show the TalkBack suggestions button."
+                        VerticalTextAlignment="Center" />
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <CheckBox x:Name="TurnOverOneCardCheckBox" 
+                        AutomationProperties.LabeledBy="TurnOverOneCardCheckBoxLabel"
+                        WidthRequest="24"
+                        CheckedChanged="TurnOverOneCardCheckBox_CheckedChanged" />
+                    <Label x:Name="TurnOverOneCardCheckBoxLabel"
+                        Text="Turn over remaining cards one at a time."
+                        VerticalTextAlignment="Center" />
+                </StackLayout>
+                <StackLayout Grid.Row="0" Orientation="Horizontal">
+                    <CheckBox x:Name="IncludeRowNumberCheckBox" 
+                        AutomationProperties.LabeledBy="IncludeRowNumberCheckBoxLabel"
+                        WidthRequest="24"
+                        CheckedChanged="IncludeRowNumberCheckBox_CheckedChanged" />
+                    <Label x:Name="IncludeRowNumberCheckBoxLabel"
+                        Text="Include row number in dealt card announcement."
+                        VerticalTextAlignment="Center" />
+                </StackLayout>
             </StackLayout>
             <StackLayout Grid.Row="1" HorizontalOptions="End">
                 <Button Text="Close" WidthRequest="100"

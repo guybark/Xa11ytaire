@@ -14,6 +14,13 @@ namespace Xa11ytaire.Source.Classes
     {
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
+        private Settings settings;
+
+        public PlayingCard(Settings settings)
+        {
+            this.settings = settings;
+        }
+
         // Barker: The ListView items don't seem to have an IsSelected, so add one
         // in order to bind to it.
         public static readonly BindableProperty IsSelectedProperty =
@@ -257,7 +264,10 @@ namespace Xa11ytaire.Source.Classes
                 }
                 else
                 {
-                    helpText = "Row " + this.VisibleRowIndex;
+                    if (settings.IncludeRowNumber)
+                    {
+                        helpText = "Row " + this.VisibleRowIndex;
+                    }
                 }
 
                 return helpText;

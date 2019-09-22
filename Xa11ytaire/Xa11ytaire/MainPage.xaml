@@ -234,11 +234,31 @@
                         <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
 
-                    <ListView x:Name="CardPile1" x:Uid="CardPile1" Grid.Row="0" Grid.Column="0" RowHeight="-1"
-                        AutomationProperties.Name="{i18n:TranslateExtension Text=Pile1}" ItemTemplate="{StaticResource PlayingCardListViewTemplate}" 
-                        Margin="0"
-                        ItemSelected="CardPile_SelectionChanged" HasUnevenRows="True">
-                    </ListView>
+                    <StackLayout Grid.Row="0" Grid.Column="0" 
+                                 Margin="0">
+
+                        <ListView x:Name="CardPile1" x:Uid="CardPile1" 
+                            RowHeight="-1"
+                            AutomationProperties.Name="{i18n:TranslateExtension Text=Pile1}" ItemTemplate="{StaticResource PlayingCardListViewTemplate}" 
+                            Margin="0"
+                            ItemSelected="CardPile_SelectionChanged" HasUnevenRows="True">
+                        </ListView>
+
+                        <Grid x:Name="SuggestionContainer" 
+                            Margin="0" HeightRequest="160">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Button Grid.Column="0"
+                                Text="&#x003F;" FontSize="Large" FontAttributes="Bold"
+                                AutomationProperties.Name="Suggestions" 
+                                Clicked="SuggestionsButton_Clicked" 
+                                Margin="0" Padding="0,0,0,6" />
+
+                        </Grid>
+                    </StackLayout>
 
                     <ListView x:Name="CardPile2" x:Uid="CardPile2" Grid.Row="0" Grid.Column="1" RowHeight="-1"
                         AutomationProperties.Name="{i18n:TranslateExtension Text=Pile2}" ItemTemplate="{StaticResource PlayingCardListViewTemplate}" 

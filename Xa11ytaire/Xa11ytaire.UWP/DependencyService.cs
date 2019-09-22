@@ -30,11 +30,23 @@ namespace Xa11ytaire.UWP
         {
             var settings = new Settings();
 
+            settings.ShowSuggestionsButton = false;
             settings.TurnOverOneCard = false;
+            settings.IncludeRowNumber = false;
+
+            if (Application.Current.Properties.ContainsKey("ShowSuggestionsButton"))
+            {
+                settings.ShowSuggestionsButton = (bool)Application.Current.Properties["ShowSuggestionsButton"];
+            }
 
             if (Application.Current.Properties.ContainsKey("TurnOverOneCard"))
             {
                 settings.TurnOverOneCard = (bool)Application.Current.Properties["TurnOverOneCard"];
+            }
+
+            if (Application.Current.Properties.ContainsKey("IncludeRowNumber"))
+            {
+                settings.IncludeRowNumber = (bool)Application.Current.Properties["IncludeRowNumber"];
             }
 
             return settings;
@@ -42,8 +54,14 @@ namespace Xa11ytaire.UWP
 
         public void SaveSettings(Settings settings)
         {
-            Application.Current.Properties["TurnOverOneCard"] = 
+            Application.Current.Properties["ShowSuggestionsButton"] =
+                settings.ShowSuggestionsButton;
+
+            Application.Current.Properties["TurnOverOneCard"] =
                 settings.TurnOverOneCard;
+
+            Application.Current.Properties["IncludeRowNumber"] =
+                settings.IncludeRowNumber;
         }
 
         public void ScreenReaderAnnouncement(string notification)

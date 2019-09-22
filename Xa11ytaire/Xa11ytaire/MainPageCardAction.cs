@@ -180,7 +180,7 @@ namespace Xa11ytaire
             }
 
             // cardAbove here is the upturned card.
-            PlayingCard cardAbove = new PlayingCard();
+            PlayingCard cardAbove = CreatePlayingCard();
             cardAbove.CardState = CardState.FaceUp;
             cardAbove.IsCardVisible = true;
 
@@ -693,7 +693,7 @@ namespace Xa11ytaire
             if (CardDeckUpturned.IsToggled)
             {
                 // cardAbove here is the upturned card.
-                PlayingCard cardAbove = new PlayingCard();
+                PlayingCard cardAbove = CreatePlayingCard();
                 cardAbove.IsCardVisible = true;
                 cardAbove.CardState = CardState.FaceUp;
                 cardAbove.Card = _deckUpturned[_deckUpturned.Count - 1];
@@ -798,7 +798,7 @@ namespace Xa11ytaire
             if ((CardDeckUpturned.IsToggled) && (_deckUpturned.Count > 0))
             {
                 // cardAbove here will be the card being moved from the upturned card pile.
-                PlayingCard cardAbove = new PlayingCard();
+                PlayingCard cardAbove = CreatePlayingCard();
                 cardAbove.IsCardVisible = true;
                 cardAbove.CardState = CardState.FaceUp;
                 cardAbove.Card = _deckUpturned[_deckUpturned.Count - 1];
@@ -1018,7 +1018,7 @@ namespace Xa11ytaire
 
             if ((listTargetPile != null) && (listTargetPile.Count > 0))
             {
-                PlayingCard cardAbove = new PlayingCard();
+                PlayingCard cardAbove = CreatePlayingCard();
                 cardAbove.IsCardVisible = true;
                 cardAbove.CardState = CardState.FaceUp;
 
@@ -1170,7 +1170,7 @@ namespace Xa11ytaire
                             }
 
                             // Create a new card which will be added to the target list.
-                            PlayingCard newCard = new PlayingCard();
+                            PlayingCard newCard = CreatePlayingCard();
                             newCard.IsCardVisible = true;
                             newCard.Card = new Card();
                             newCard.Card.Suit = cardAbove.Card.Suit;

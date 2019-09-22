@@ -20,12 +20,24 @@ namespace Xa11ytaire
 
             this.settings = settings;
 
+            ShowSuggestionsButtonCheckBox.IsChecked = this.settings.ShowSuggestionsButton;
             TurnOverOneCardCheckBox.IsChecked = this.settings.TurnOverOneCard;
+            IncludeRowNumberCheckBox.IsChecked = this.settings.IncludeRowNumber;
+        }
+
+        private void ShowSuggestionsButtonCheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
+        {
+            this.settings.ShowSuggestionsButton = (sender as CheckBox).IsChecked;
         }
 
         private void TurnOverOneCardCheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
         {
             this.settings.TurnOverOneCard = (sender as CheckBox).IsChecked;
+        }
+
+        private void IncludeRowNumberCheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
+        {
+            this.settings.IncludeRowNumber = (sender as CheckBox).IsChecked;
         }
 
         private async void CloseButton_Clicked(object sender, EventArgs e)

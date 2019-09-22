@@ -85,6 +85,38 @@ namespace Xa11ytaire
             RestartGame(false);
         }
 
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            // The page is appearing either for the first time,
+            // or following the Settings page being close.
+
+            // Respect the current settings.
+            SuggestionContainer.IsVisible = settings.ShowSuggestionsButton;
+
+            for (int i = 0; i < cCardPiles; i++)
+            {
+                ListView list = (ListView)CardPileGrid.FindByName("CardPile" + (i + 1));
+                var items = list.ItemsSource as ObservableCollection<PlayingCard>;
+
+                for (int j = 0; j < items.Count; j++)
+                {
+                    var playingCard = (items[items.Count - 1] as PlayingCard);
+
+                    // Force the row idnex to change in order to refresh the HelpText.
+                    int rowIndex = playingCard.VisibleRowIndex;
+                    playingCard.VisibleRowIndex = -1;
+                    playingCard.VisibleRowIndex = rowIndex;
+                }
+            }
+        }
+
+        private PlayingCard CreatePlayingCard()
+        {
+            return new PlayingCard(this.settings);
+        }
+
         private void DealCards()
         {
             _dealingCards = true;
@@ -108,7 +140,7 @@ namespace Xa11ytaire
 
                 for (int j = 0; j < (i + 1); j++)
                 {
-                    var card = new PlayingCard();
+                    var card = CreatePlayingCard();
 
                     card.Card = _deckRemaining[cardIndex];
 
@@ -350,6 +382,15 @@ namespace Xa11ytaire
             await Navigation.PushModalAsync(settingsPage);
         }
 
+        private void SuggestionsButton_Clicked(object sender, EventArgs e)
+        {
+            string suggestion;
+            if (GetMoveSuggestion(out suggestion))
+            {
+                RaiseNotificationEvent(suggestion);
+            }
+        }
+
         private void ClearUpturnedPileButton()
         {
             SetUpturnedCardsVisuals();
@@ -510,12 +551,245 @@ namespace Xa11ytaire
                 RestartGame(false);
             }
         }
+
+        private bool GetMoveSuggestion(out string suggestion)
+        {
+            // BARKER TODO!
+            // - Check all face-up cards for a move, not just the last card in the dealt card pile.
+            // - Check for moving a card from a target card pile back down to a dealt card pile.
+            // - Check whether any reachable card in the remaining card pile can be moved.
+
+            // Also:
+            // - Use localized resources.
+            // - Add helper functions to avoid the code duplication below.
+
+            suggestion = "";
+
+            bool canMoveCard = false;
+
+            // First check whether the upturned card can be moved to 
+            // a target card pile.
+            if (_deckUpturned.Count > 0)
+            {
+                Card upturnedCard = _deckUpturned[_deckUpturned.Count - 1];
+
+                CardPileToggleButton targetCardButton = null;
+
+                if (upturnedCard.Suit == Suit.Clubs)
+                {
+                    targetCardButton = TargetPileC;
+                }
+                else if (upturnedCard.Suit == Suit.Diamonds)
+                {
+                    targetCardButton = TargetPileD;
+                }
+                else if (upturnedCard.Suit == Suit.Hearts)
+                {
+                    targetCardButton = TargetPileH;
+                }
+                else if (upturnedCard.Suit == Suit.Spades)
+                {
+                    targetCardButton = TargetPileS;
+                }
+
+                if ((upturnedCard != null) && (targetCardButton != null))
+                {
+                    // Is there a card on this target card pile yet?
+                    if (targetCardButton.Card == null)
+                    {
+                        // No, so a move is only possible if the upturned card is an ace.
+                        if (upturnedCard.Rank == 1)
+                        {
+                            canMoveCard = true;
+                        }
+                    }
+                    else
+                    {
+                        // Check if the upturned card can be moved on top of the card
+                        // that's currently at the top of the target card pile.
+                        if (upturnedCard.Rank == targetCardButton.Card.Rank + 1)
+                        {
+                            canMoveCard = true;
+                        }
+                    }
+
+                    if (canMoveCard)
+                    {
+                        suggestion = "Consider moving the upturned " +
+                            upturnedCard.ToString() + " to the " +
+                            targetCardButton.Suit + " pile.";
+                    }
+                }
+
+                // If necessary, consider moving the upturned card to a dealt card pile.
+                if (!canMoveCard)
+                {
+                    for (int i = 0; i < cCardPiles; i++)
+                    {
+                        ListView list = (ListView)CardPileGrid.FindByName("CardPile" + (i + 1));
+                        var items = list.ItemsSource as ObservableCollection<PlayingCard>;
+
+                        if (items.Count > 0)
+                        {
+                            var topCardInDealtCardPile = (items[items.Count - 1] as PlayingCard);
+
+                            // If this deaklt card pile empty?
+                            if (topCardInDealtCardPile.CardState == CardState.KingPlaceHolder)
+                            {
+                                // Only a King can be moved to an empty pile.
+                                if (upturnedCard.Rank == 13)
+                                {
+                                    canMoveCard = true;
+                                }
+                            }
+                            else
+                            {
+                                var playingCardUpturned = CreatePlayingCard();
+                                playingCardUpturned.Card = _deckUpturned[_deckUpturned.Count - 1];
+
+                                if (CanMoveCard(topCardInDealtCardPile, playingCardUpturned))
+                                {
+                                    canMoveCard = true;
+                                }
+                            }
+
+                            if (canMoveCard)
+                            {
+                                suggestion = "Consider moving the upturned " +
+                                    upturnedCard.ToString() + " to the " +
+                                    topCardInDealtCardPile.Name + " in pile " +
+                                    (i + 1);
+
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // If necessary, check if a card can be moved away from a dealt card piles.
+            if (!canMoveCard)
+            {
+                for (int i = 0; i < cCardPiles; i++)
+                {
+                    // Check each dealt card list in turn.
+                    ListView listSource = (ListView)CardPileGrid.FindByName("CardPile" + (i + 1));
+                    var itemsSource = listSource.ItemsSource as ObservableCollection<PlayingCard>;
+
+                    if (itemsSource.Count > 0)
+                    {
+                        var topCardInSourceCardPile = (itemsSource[itemsSource.Count - 1] as PlayingCard);
+
+                        CardPileToggleButton targetCardButton = null;
+
+                        if (topCardInSourceCardPile.Suit == Suit.Clubs)
+                        {
+                            targetCardButton = TargetPileC;
+                        }
+                        else if (topCardInSourceCardPile.Suit == Suit.Diamonds)
+                        {
+                            targetCardButton = TargetPileD;
+                        }
+                        else if (topCardInSourceCardPile.Suit == Suit.Hearts)
+                        {
+                            targetCardButton = TargetPileH;
+                        }
+                        else if (topCardInSourceCardPile.Suit == Suit.Spades)
+                        {
+                            targetCardButton = TargetPileS;
+                        }
+
+                        // Is there a card on this target card pile yet?
+                        if (targetCardButton.Card == null)
+                        {
+                            // No, so a move is only possible if the upturned card is an ace.
+                            if (topCardInSourceCardPile.Rank == 1)
+                            {
+                                canMoveCard = true;
+                            }
+                        }
+                        else
+                        {
+                            // Check if the dealt card can be moved on top of the card
+                            // that's currently at the top of the target card pile.
+                            if (topCardInSourceCardPile.Rank == targetCardButton.Card.Rank + 1)
+                            {
+                                canMoveCard = true;
+                            }
+                        }
+
+                        if (canMoveCard)
+                        {
+                            suggestion = "Consider moving the " +
+                                topCardInSourceCardPile.Name + " in pile " + 
+                                (i + 1).ToString() + 
+                                " to the " +
+                                targetCardButton.Suit + " pile.";
+                        }
+                        else
+                        {
+                            // Look for a move between dealt card piles.
+                            for (int j = 0; j < cCardPiles; j++)
+                            {
+                                if (i == j)
+                                {
+                                    continue;
+                                }
+
+                                ListView listDestination =
+                                    (ListView)CardPileGrid.FindByName("CardPile" + (j + 1));
+                                var itemsDestination = listDestination.ItemsSource as ObservableCollection<PlayingCard>;
+
+                                if (itemsDestination.Count > 0)
+                                {
+                                    var topCardInDestinationCardPile =
+                                        (itemsDestination[itemsDestination.Count - 1] as PlayingCard);
+
+                                    if (topCardInDestinationCardPile.CardState == CardState.KingPlaceHolder)
+                                    {
+                                        // Move a King to the empty pile.
+                                        if (topCardInSourceCardPile.Card.Rank == 13)
+                                        {
+                                            canMoveCard = true;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (CanMoveCard(
+                                                topCardInDestinationCardPile,
+                                                topCardInSourceCardPile))
+                                        {
+                                            canMoveCard = true;
+                                        }
+                                    }
+
+                                    if (canMoveCard)
+                                    {
+                                        suggestion = "Consider moving the " +
+                                            topCardInSourceCardPile.Name +
+                                            " in pile " + 
+                                            (i + 1).ToString() + " to the " +
+                                            topCardInDestinationCardPile.Name +
+                                            " in pile " + 
+                                            (j + 1).ToString() + ".";
+
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return canMoveCard;
+        }
     }
 
-// The code below was copied from:
-// https://docs.microsoft.com/en-us/xamarin/xamarin-forms/app-fundamentals/localization/text?tabs=windows
+    // The code below was copied from:
+    // https://docs.microsoft.com/en-us/xamarin/xamarin-forms/app-fundamentals/localization/text?tabs=windows
 
-public interface ILocalize
+    public interface ILocalize
     {
         CultureInfo GetCurrentCultureInfo();
         void SetLocale(CultureInfo ci);
