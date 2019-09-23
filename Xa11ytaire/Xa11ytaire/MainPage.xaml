@@ -235,7 +235,8 @@
                     </Grid.ColumnDefinitions>
 
                     <StackLayout Grid.Row="0" Grid.Column="0" 
-                                 Margin="0">
+                        x:Name="CardPile1Container"
+                        Margin="0">
 
                         <ListView x:Name="CardPile1" x:Uid="CardPile1" 
                             RowHeight="-1"
@@ -244,20 +245,18 @@
                             ItemSelected="CardPile_SelectionChanged" HasUnevenRows="True">
                         </ListView>
 
-                        <Grid x:Name="SuggestionContainer" 
-                            Margin="0" HeightRequest="160">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
+                        <StackLayout Padding="0" HeightRequest="40"
+                            x:Name="SuggestionContainer"  
+                            IsVisible="False"
+                            Orientation="Horizontal">
 
-                            <Button Grid.Column="0"
+                            <Button WidthRequest="40" MinimumWidthRequest="40"
                                 Text="&#x003F;" FontSize="Large" FontAttributes="Bold"
                                 AutomationProperties.Name="Suggestions" 
                                 Clicked="SuggestionsButton_Clicked" 
-                                Margin="0" Padding="0,0,0,6" />
+                                Margin="0" Padding="0" />
 
-                        </Grid>
+                        </StackLayout>
                     </StackLayout>
 
                     <ListView x:Name="CardPile2" x:Uid="CardPile2" Grid.Row="0" Grid.Column="1" RowHeight="-1"
@@ -284,41 +283,42 @@
                         ItemSelected="CardPile_SelectionChanged" HasUnevenRows="True">
                     </ListView>
 
-                    <ListView x:Name="CardPile6" x:Uid="CardPile6" Grid.Row="0" Grid.Column="5" RowHeight="-1"
-                        AutomationProperties.Name="{i18n:TranslateExtension Text=Pile6}" ItemTemplate="{StaticResource PlayingCardListViewTemplate}"
+                    <ListView x:Name="CardPile6" x:Uid="CardPile6" Grid.Row="0" Grid.Column="5" 
+                        RowHeight="-1"
+                        AutomationProperties.Name="{i18n:TranslateExtension Text=Pile6}" 
+                        ItemTemplate="{StaticResource PlayingCardListViewTemplate}"
                         Margin="0"                       
                         ItemSelected="CardPile_SelectionChanged" HasUnevenRows="True">
                     </ListView>
 
                     <StackLayout Grid.Row="0" Grid.Column="6" 
-                                 Margin="0,0,10,0">
+                        x:Name="CardPile7Container">
 
                         <ListView x:Name="CardPile7" x:Uid="CardPile7" 
                             RowHeight="-1"
-                            AutomationProperties.Name="{i18n:TranslateExtension Text=Pile7}" ItemTemplate="{StaticResource PlayingCardListViewTemplate}"
-                            Margin="0,0,0,0"                       
+                            AutomationProperties.Name="{i18n:TranslateExtension Text=Pile7}" 
+                            ItemTemplate="{StaticResource PlayingCardListViewTemplate}"
+                            Margin="0"                       
                             ItemSelected="CardPile_SelectionChanged" HasUnevenRows="True">
                         </ListView>
 
-                        <!-- Barker: Uh. Any way to remove the hard-coded height? -->
-                        <Grid HeightRequest="160">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            
-                            <Button Grid.Column="0"
+                        <StackLayout Padding="0" HeightRequest="40"
+                            Orientation="Horizontal">
+
+                            <Button WidthRequest="40" MinimumWidthRequest="40"
                                 Text="&#x2699;" FontSize="Large" FontAttributes="Bold"
                                 AutomationProperties.Name="Settings" 
                                 Clicked="SettingsButton_Clicked" 
-                                Margin="0" Padding="0,0,0,6" />
+                                Margin="0" Padding="0" />
 
-                            <Button Grid.Column="1"
+                            <!--Barker: Can't seem to avoid the need for the negative margin.-->
+                            <Button WidthRequest="40" MinimumWidthRequest="40"
+                                Padding="0,0,0,6"
                                 Text="&#x21bb;" FontSize="Large" FontAttributes="Bold"
                                 AutomationProperties.Name="Restart" 
                                 Clicked="RestartButton_Clicked" 
-                                Margin="0" Padding="0,0,0,6" />
-                        </Grid>
+                                Margin="-10,0,0,0" />
+                        </StackLayout>
                     </StackLayout> 
                 </Grid>
             </StackLayout>

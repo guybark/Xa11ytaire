@@ -222,13 +222,13 @@ namespace Xa11ytaire
 
             mostRecentDealtCardPileWidth = dealtCardPileWidth;
 
-            CardPile1.WidthRequest = dealtCardPileWidth;
+            CardPile1Container.WidthRequest = dealtCardPileWidth;
             CardPile2.WidthRequest = dealtCardPileWidth;
             CardPile3.WidthRequest = dealtCardPileWidth;
             CardPile4.WidthRequest = dealtCardPileWidth;
             CardPile5.WidthRequest = dealtCardPileWidth;
             CardPile6.WidthRequest = dealtCardPileWidth;
-            CardPile7.WidthRequest = dealtCardPileWidth;
+            CardPile7Container.WidthRequest = dealtCardPileWidth;
 
             MainPage.LastCardHeight = (int)((dealtCardPileWidth * 346) / 259);
 
@@ -387,6 +387,11 @@ namespace Xa11ytaire
             if (GetMoveSuggestion(out suggestion))
             {
                 RaiseNotificationEvent(suggestion);
+            }
+            else
+            {
+                RaiseNotificationEvent(
+                    "Sorry, I don't have a suggestion at the moment.");
             }
         }
 
