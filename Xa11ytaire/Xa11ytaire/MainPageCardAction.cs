@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Text;
-using Xa11ytaire.Source;
-using Xa11ytaire.Source.Classes;
-using Xamarin.Forms;
-
-//using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Prediction;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Diagnostics;
+
+using Xamarin.Forms;
+
+using Xa11ytaire.Source;
+using Xa11ytaire.Source.Classes;
 
 // Notes on the summary grid element.
 //
