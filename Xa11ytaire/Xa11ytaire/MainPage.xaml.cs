@@ -554,8 +554,11 @@ namespace Xa11ytaire
 
         private bool GetMoveSuggestion(out string suggestion)
         {
+            // Important: When checking for a move between dealt card piles,
+            // only check the lowest face-up card. We don't want to just be 
+            // moving cards back and forth between piles.
+
             // BARKER TODO!
-            // - Check all face-up cards for a move, not just the last card in the dealt card pile.
             // - Check for moving a card from a target card pile back down to a dealt card pile.
             // - Check whether any reachable card in the remaining card pile can be moved.
 
@@ -678,23 +681,29 @@ namespace Xa11ytaire
 
                     if (itemsSource.Count > 0)
                     {
-                        var topCardInSourceCardPile = (itemsSource[itemsSource.Count - 1] as PlayingCard);
+                        var cardToMoveInSourceCardPile = (itemsSource[itemsSource.Count - 1] as PlayingCard);
+
+                        // If this is a King placeholder, we're not moving it.
+                        if (cardToMoveInSourceCardPile.IsKingDropZone)
+                        {
+                            continue;
+                        }
 
                         CardPileToggleButton targetCardButton = null;
 
-                        if (topCardInSourceCardPile.Suit == Suit.Clubs)
+                        if (cardToMoveInSourceCardPile.Suit == Suit.Clubs)
                         {
                             targetCardButton = TargetPileC;
                         }
-                        else if (topCardInSourceCardPile.Suit == Suit.Diamonds)
+                        else if (cardToMoveInSourceCardPile.Suit == Suit.Diamonds)
                         {
                             targetCardButton = TargetPileD;
                         }
-                        else if (topCardInSourceCardPile.Suit == Suit.Hearts)
+                        else if (cardToMoveInSourceCardPile.Suit == Suit.Hearts)
                         {
                             targetCardButton = TargetPileH;
                         }
-                        else if (topCardInSourceCardPile.Suit == Suit.Spades)
+                        else if (cardToMoveInSourceCardPile.Suit == Suit.Spades)
                         {
                             targetCardButton = TargetPileS;
                         }
@@ -703,7 +712,7 @@ namespace Xa11ytaire
                         if (targetCardButton.Card == null)
                         {
                             // No, so a move is only possible if the upturned card is an ace.
-                            if (topCardInSourceCardPile.Rank == 1)
+                            if (cardToMoveInSourceCardPile.Rank == 1)
                             {
                                 canMoveCard = true;
                             }
@@ -712,7 +721,7 @@ namespace Xa11ytaire
                         {
                             // Check if the dealt card can be moved on top of the card
                             // that's currently at the top of the target card pile.
-                            if (topCardInSourceCardPile.Rank == targetCardButton.Card.Rank + 1)
+                            if (cardToMoveInSourceCardPile.Rank == targetCardButton.Card.Rank + 1)
                             {
                                 canMoveCard = true;
                             }
@@ -721,13 +730,30 @@ namespace Xa11ytaire
                         if (canMoveCard)
                         {
                             suggestion = "Consider moving the " +
-                                topCardInSourceCardPile.Name + " in pile " + 
+                                cardToMoveInSourceCardPile.Name + " in pile " + 
                                 (i + 1).ToString() + 
                                 " to the " +
                                 targetCardButton.Suit + " pile.";
+
+                            break;
                         }
                         else
                         {
+                            // Now look for the lowest face-up card in the source pile.
+                            int indexToLowestFaceUpCardInSourceCardPile =
+                                (itemsSource[0] as PlayingCard).FaceDown ?
+                                    1 : 0;
+
+                            cardToMoveInSourceCardPile = 
+                               (itemsSource[indexToLowestFaceUpCardInSourceCardPile] as PlayingCard);
+
+                            // Don't bother moving a King from the bottom of a pile.
+                            if ((cardToMoveInSourceCardPile.Card.Rank == 13) &&
+                                (indexToLowestFaceUpCardInSourceCardPile == 0))
+                            {
+                                continue;
+                            }
+
                             // Look for a move between dealt card piles.
                             for (int j = 0; j < cCardPiles; j++)
                             {
@@ -748,7 +774,7 @@ namespace Xa11ytaire
                                     if (topCardInDestinationCardPile.CardState == CardState.KingPlaceHolder)
                                     {
                                         // Move a King to the empty pile.
-                                        if (topCardInSourceCardPile.Card.Rank == 13)
+                                        if (cardToMoveInSourceCardPile.Card.Rank == 13)
                                         {
                                             canMoveCard = true;
                                         }
@@ -757,7 +783,7 @@ namespace Xa11ytaire
                                     {
                                         if (CanMoveCard(
                                                 topCardInDestinationCardPile,
-                                                topCardInSourceCardPile))
+                                                cardToMoveInSourceCardPile))
                                         {
                                             canMoveCard = true;
                                         }
@@ -766,7 +792,7 @@ namespace Xa11ytaire
                                     if (canMoveCard)
                                     {
                                         suggestion = "Consider moving the " +
-                                            topCardInSourceCardPile.Name +
+                                            cardToMoveInSourceCardPile.Name +
                                             " in pile " + 
                                             (i + 1).ToString() + " to the " +
                                             topCardInDestinationCardPile.Name +
@@ -776,6 +802,11 @@ namespace Xa11ytaire
                                         break;
                                     }
                                 }
+                            }
+
+                            if (canMoveCard)
+                            {
+                                break;
                             }
                         }
                     }
