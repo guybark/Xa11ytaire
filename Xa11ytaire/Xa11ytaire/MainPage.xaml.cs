@@ -81,6 +81,8 @@ namespace Xa11ytaire
                 _targetPiles[i] = new List<Card>();
             }
 
+            SuggestionContainer.IsVisible = settings.ShowSuggestionsButton;
+
             RestartGame(false);
         }
 

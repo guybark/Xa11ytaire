@@ -38,14 +38,38 @@ namespace Xa11ytaire.Droid
         {
             var settings = new Settings();
 
-            // Barker: Load up Android settings here.
+            var preferences = Application.Context.GetSharedPreferences("Xa11ytaire", 
+                FileCreationMode.Private);
+
+            settings.ShowSuggestionsButton =
+                (preferences.GetString("ShowSuggestionsButton", "off") == "on");
+
+            settings.TurnOverOneCard =
+                (preferences.GetString("TurnOverOneCard", "off") == "on");
+
+            settings.IncludeRowNumber =
+                (preferences.GetString("IncludeRowNumber", "off") == "on");
 
             return settings;
         }
 
         public void SaveSettings(Settings settings)
         {
-            // Barker: Save Android settings here.
+            var preferences = Application.Context.GetSharedPreferences("Xa11ytaire",
+                FileCreationMode.Private);
+
+            var preferencesEditor = preferences.Edit();
+
+            preferencesEditor.PutString("ShowSuggestionsButton",
+                settings.ShowSuggestionsButton ? "on" : "off");
+
+            preferencesEditor.PutString("TurnOverOneCard",
+                settings.TurnOverOneCard ? "on" : "off");
+
+            preferencesEditor.PutString("IncludeRowNumber",
+                settings.IncludeRowNumber ? "on" : "off");
+
+            preferencesEditor.Commit();
         }
 
         public void ScreenReaderAnnouncement(string notification)
