@@ -20,6 +20,24 @@ namespace Xa11ytaire
 
             this.settings = settings;
 
+            // Barker: I couldn't get LabeledBy to work with a Checkbox.
+
+            AutomationProperties.SetName(
+                ShowSuggestionsButtonCheckBox,
+                "Show the TalkBack suggestions button.");
+
+            AutomationProperties.SetName(
+                TurnOverOneCardCheckBox,
+                "Turn over remaining cards one at a time.");
+
+            AutomationProperties.SetName(
+                IncludeRowNumberCheckBox,
+                "Include the row number in the dealt card TalkBack announcement.");
+
+            AutomationProperties.SetHelpText(
+                IncludeRowNumberCheckBox,
+                "Takes effect after the next game restart.");
+
             ShowSuggestionsButtonCheckBox.IsChecked = this.settings.ShowSuggestionsButton;
             TurnOverOneCardCheckBox.IsChecked = this.settings.TurnOverOneCard;
             IncludeRowNumberCheckBox.IsChecked = this.settings.IncludeRowNumber;

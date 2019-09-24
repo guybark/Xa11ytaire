@@ -95,22 +95,6 @@ namespace Xa11ytaire
 
             // Respect the current settings.
             SuggestionContainer.IsVisible = settings.ShowSuggestionsButton;
-
-            for (int i = 0; i < cCardPiles; i++)
-            {
-                ListView list = (ListView)CardPileGrid.FindByName("CardPile" + (i + 1));
-                var items = list.ItemsSource as ObservableCollection<PlayingCard>;
-
-                for (int j = 0; j < items.Count; j++)
-                {
-                    var playingCard = (items[items.Count - 1] as PlayingCard);
-
-                    // Force the row idnex to change in order to refresh the HelpText.
-                    int rowIndex = playingCard.VisibleRowIndex;
-                    playingCard.VisibleRowIndex = -1;
-                    playingCard.VisibleRowIndex = rowIndex;
-                }
-            }
         }
 
         private PlayingCard CreatePlayingCard()

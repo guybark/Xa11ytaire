@@ -252,7 +252,7 @@
 
                             <Button WidthRequest="40" MinimumWidthRequest="40"
                                 Text="&#x003F;" FontSize="Large" FontAttributes="Bold"
-                                AutomationProperties.Name="Suggestions" 
+                                AutomationProperties.Name="Suggestion" 
                                 Clicked="SuggestionsButton_Clicked" 
                                 Margin="0" Padding="0" />
 
