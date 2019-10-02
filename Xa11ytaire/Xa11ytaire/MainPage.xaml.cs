@@ -14,6 +14,7 @@ using Xamarin.Forms.Xaml;
 using Xa11ytaire.Source;
 using Xa11ytaire.Source.Classes;
 using Xa11ytaire.Source.ViewModels;
+//using Plugin.LocalNotifications;
 
 // Barker: Learn about the Switch control.
 
@@ -370,15 +371,24 @@ namespace Xa11ytaire
         private void SuggestionsButton_Clicked(object sender, EventArgs e)
         {
             string suggestion;
-            if (GetMoveSuggestion(out suggestion))
+            if (!GetMoveSuggestion(out suggestion))
             {
-                RaiseNotificationEvent(suggestion);
+                suggestion = "Sorry, I don't have a suggestion at the moment.";
             }
-            else
-            {
-                RaiseNotificationEvent(
-                    "Sorry, I don't have a suggestion at the moment.");
-            }
+
+            RaiseNotificationEvent(suggestion);
+
+            // Tested successful on Android if we want to have a notification raised.
+            //try
+            //{
+            //    CrossLocalNotifications.Current.Show(
+            //        "Xa11ytaire",
+            //        suggestion);
+            //}
+            //catch (Exception ex)
+            //{
+            //    Debug.WriteLine(ex.Message);
+            //}
         }
 
         private void ClearUpturnedPileButton()
