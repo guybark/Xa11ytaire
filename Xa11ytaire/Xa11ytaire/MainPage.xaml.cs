@@ -26,12 +26,6 @@ namespace Xa11ytaire
 
         void SaveSettings(Settings settings);
 
-        Task<string> LocalRecognizeImage(Stream imageStream);
-
-        Task<bool> InitializeMicrophone();
-
-        Task<byte[]> GetPixelValuesForMLReco();
-
         void ScreenReaderAnnouncement(string notification);
     }
 
@@ -59,12 +53,9 @@ namespace Xa11ytaire
         private Shuffler _shuffler;
         private List<Card> _deckRemaining = new List<Card>();
         private List<Card> _deckUpturned = new List<Card>();
-        private bool _dealingCards = false;
 
         private int cTargetPiles = 4;
         private List<Card>[] _targetPiles = new List<Card>[4];
-
-        private bool cardHasBeenMoved = false;
 
         private Settings settings;
 
@@ -111,8 +102,6 @@ namespace Xa11ytaire
 
         private void DealCards()
         {
-            _dealingCards = true;
-
             int cardIndex = 0;
 
             Debug.WriteLine("Deal, start with " + _deckRemaining.Count + " cards.");
@@ -120,12 +109,6 @@ namespace Xa11ytaire
             for (int i = 0; i < cCardPiles; i++)
             {
                 ListView list = (ListView)CardPileGrid.FindByName("CardPile" + (i + 1));
-
-                // XBarker: Can't access items in the list directly.
-                //if (list.Items.Count > 0)
-                //{
-                //    list.SelectedIndex = 0;
-                //}
 
                 this.ViewModel.PlayingCardsB[i].Clear();
                 this.ViewModel.PlayingCards[i].Clear();
@@ -178,8 +161,6 @@ namespace Xa11ytaire
 
             ClearTargetPileButtons();
             ClearUpturnedPileButton();
-
-            _dealingCards = false;
 
             SetCardPileSize();
 
@@ -376,7 +357,7 @@ namespace Xa11ytaire
             await Navigation.PushModalAsync(settingsPage);
         }
 
-        private void SuggestionsButton_Clicked(object sender, EventArgs e)
+        private async void SuggestionsButton_Clicked(object sender, EventArgs e)
         {
             string suggestion;
             if (!GetMoveSuggestion(out suggestion))
@@ -385,6 +366,11 @@ namespace Xa11ytaire
             }
 
             RaiseNotificationEvent(suggestion);
+
+            await DisplayAlert(
+                "Suggestion",
+                suggestion,
+                "Close");
 
             // Tested successful on Android if we want to have a notification raised.
             //try
@@ -432,8 +418,6 @@ namespace Xa11ytaire
                 }
             }
 
-            //MostRecentNotificationTextBox.Text = "";
-
             UncheckToggleButtons(true);
 
             _deckUpturned.Clear();
@@ -466,31 +450,9 @@ namespace Xa11ytaire
 
             NextCardDeck.IsEmpty = false;
 
-            //NextCardDeck.Focus(FocusState.Keyboard);
-
             RaiseNotificationEvent(
                 Resource1.GameRestarted);
-
-            //if (screenReaderAnnouncement)
-            //{
-            //    RaiseNotificationEvent(
-            //        AutomationNotificationKind.Other,
-            //        AutomationNotificationProcessing.ImportantMostRecent,
-            //        "Game restarted",
-            //        NotificationActivityID_Default,
-            //        NextCardDeck);
-            //}
-
-            //CardRecoStatus.Text = "";
         }
-
-        //private void TakePhoto_Clicked(object sender, EventArgs e)
-        //{
-        //    CardRecoStatus.Text = "";
-
-        //    MoveByImageReco();
-        //}
-
 
         private void CardDeckUpturned_Toggled(object sender, ToggledEventArgs e)
         {
@@ -514,18 +476,6 @@ namespace Xa11ytaire
 
                 RaiseNotificationEvent(
                      upturnedAnnouncement);
-
-                //RaiseNotificationEvent(
-                //    AutomationNotificationKind.ActionCompleted,
-                //     AutomationNotificationProcessing.ImportantAll,
-                //     upturnedAnnouncement,
-                //     NotificationActivityID_Default,
-                //     NextCardDeck);
-
-                if (this.ViewModel.SingleKeyToMove)
-                {
-                    // MoveUpturnedCardWithSingleKeyPressIfPossible();
-                }
             }
         }
 

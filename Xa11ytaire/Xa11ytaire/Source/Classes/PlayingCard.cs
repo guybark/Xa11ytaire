@@ -7,8 +7,8 @@ using Xamarin.Forms;
 
 namespace Xa11ytaire.Source.Classes
 {
-    // XBarker: Remove use of UserControl.
-    // XBarker: DependencyProperty->BindableProperty, and DependencyObject->BindableObject.
+    // Barker: Remove use of UserControl.
+    // Barker: DependencyProperty->BindableProperty, and DependencyObject->BindableObject.
 
     public class PlayingCard : /*UserControl,*/ BindableObject, INotifyPropertyChanged
     {

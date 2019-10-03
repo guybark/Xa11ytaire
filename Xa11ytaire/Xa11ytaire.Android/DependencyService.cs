@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
+﻿using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
-using Android.OS;
-using Android.Views;
 using Android.Views.Accessibility;
+
 using Java.Lang;
-//using Org.Tensorflow;
-//using Org.Tensorflow.Contrib.Android;
+
 using Xa11ytaire.Droid;
 
 [assembly: Xamarin.Forms.Dependency(typeof(Xa11ytairePlatformAction))]
@@ -24,16 +17,6 @@ namespace Xa11ytaire.Droid
         IXa11ytairePlatformAction,
         ILocalize
     {
-        //private TensorFlowInferenceInterface inferenceInterface;
-        //private List<string> labels;
-        //private float[] floatValues;
-
-        //private const string subscriptionKey = "<Your subscription key.>";
-        //private string projectId = "<Your project ID.>";
-        //private const string southcentralusEndpoint = "https://southcentralus.api.cognitive.microsoft.com";
-
-        //private int inputSize;
-
         public Settings LoadSettings()
         {
             var settings = new Settings();
@@ -93,119 +76,6 @@ namespace Xa11ytaire.Droid
 
                 MainActivity.accessibilityManager.SendAccessibilityEvent(e);
             }
-        }
-
-        public async Task<string> LocalRecognizeImage(Stream imageStream)
-        {
-            string result = "";
-
-            //DateTime timeStart = DateTime.Now;
-
-            //Debug.WriteLine("LocalRecognizeImage: Start");
-
-            //PrepareForImageReco();
-
-            //Debug.WriteLine("LocalRecognizeImage: Done PrepareForImageReco " + (DateTime.Now - timeStart).TotalMilliseconds);
-
-            //Bitmap bm = BitmapFactory.DecodeStream(imageStream);
-
-            //Debug.WriteLine("LocalRecognizeImage: Done DecodeStream " + (DateTime.Now - timeStart).TotalMilliseconds);
-
-            //ResizePhoto(bm);
-
-            //Debug.WriteLine("LocalRecognizeImage: Done ResizePhoto " + (DateTime.Now - timeStart).TotalMilliseconds);
-
-            //result = RecognizeImage();
-
-            //Debug.WriteLine("LocalRecognizeImage: Done RecognizeImage " + (DateTime.Now - timeStart).TotalMilliseconds);
-
-            return result;
-        }
-
-        private void PrepareForImageReco()
-        {
-            //// Initialize the use of the local vision model if we're not already done so.
-            //if (inferenceInterface == null)
-            //{
-            //    var assets = Application.Context.Assets;
-            //    inferenceInterface = new TensorFlowInferenceInterface(assets, "model.pb");
-            //    var sr = new StreamReader(assets.Open("labels.txt"));
-            //    labels = sr.ReadToEnd()
-            //                    .Split('\n')
-            //                    .Select(s => s.Trim())
-            //                    .Where(s => !string.IsNullOrEmpty(s))
-            //                    .ToList();
-
-            //    inputSize = (int)inferenceInterface.GraphOperation("Placeholder").Output(0).Shape().Size(1);
-
-            //    Debug.WriteLine("PrepareForImageReco: inputSize " + inputSize.ToString());
-            //}
-        }
-
-        private void ResizePhoto(Bitmap bitmap)
-        {
-            //// Previously we'd hard-code the image size to be 227x227. 
-            //// Now we use the input size supplied by the model.
-
-            //var resizedBitmap = Bitmap.CreateScaledBitmap(bitmap, inputSize, inputSize, false)
-            //                          .Copy(Bitmap.Config.Argb8888, false);
-
-            //floatValues = new float[inputSize * inputSize * 3];
-            //var intValues = new int[inputSize * inputSize];
-
-            //resizedBitmap.GetPixels(intValues, 0, inputSize, 0, 0, inputSize, inputSize);
-
-            //for (int i = 0; i < intValues.Length; ++i)
-            //{
-            //    var val = intValues[i];
-            //    floatValues[i * 3 + 0] = ((val & 0xFF) - 104);
-            //    floatValues[i * 3 + 1] = (((val >> 8) & 0xFF) - 117);
-            //    floatValues[i * 3 + 2] = (((val >> 16) & 0xFF) - 123);
-            //}
-        }
-
-        private string RecognizeImage()
-        {
-            string result = "";
-
-            //var outputs = new float[labels.Count];
-            //inferenceInterface.Feed("Placeholder", floatValues, 1, inputSize, inputSize, 3);
-            //inferenceInterface.Run(new[] { "loss" });
-            //inferenceInterface.Fetch("loss", outputs);
-
-            //// For this test, ignore confidences of less than 0.5.
-            //float maxConfidence = 0.5f;
-            //int maxConfidenceIndex = -1;
-
-            //for (int i = 0; i < outputs.Length; ++i)
-            //{
-            //    if (outputs[i] > maxConfidence)
-            //    {
-            //        maxConfidence = outputs[i];
-            //        maxConfidenceIndex = i;
-            //    }
-            //}
-
-            //if (maxConfidenceIndex >= 0)
-            //{
-            //    result = labels[maxConfidenceIndex];    
-            //}
-
-            return result;
-        }
-
-        // The following taken from:
-        // https://docs.microsoft.com/en-us/xamarin/xamarin-forms/app-fundamentals/localization/text?tabs=windows
-        public async Task<bool> InitializeMicrophone()
-        {
-            bool microphoneInitialized = false;
-
-            return microphoneInitialized;
-        }
-
-        public async Task<byte[]> GetPixelValuesForMLReco()
-        {
-            return null;
         }
 
         // The following code was copied from:

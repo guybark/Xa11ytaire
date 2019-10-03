@@ -38,7 +38,6 @@ namespace Xa11ytaire
 
         private void DoNextCardClick()
         {
-            // XBarker:
             UncheckToggleButtons(true);
 
             string screenReaderAnnouncement = "";
@@ -94,21 +93,11 @@ namespace Xa11ytaire
 
             NextCardDeck.IsEmpty = (_deckRemaining.Count == 0);
 
-            // XBarker:
-            //var resourceLoader = new Windows.ApplicationModel.Resources.ResourceLoader();
-
             string ttsText = screenReaderAnnouncement + 
                      (_deckRemaining.Count == 0 ? ", " + Resource1.NoCardLeft : ".");
 
             RaiseNotificationEvent(ttsText);
-
-            //RaiseNotificationEvent(
-            //    AutomationNotificationKind.ItemAdded,
-            //    AutomationNotificationProcessing.MostRecent,
-            //    ttsText,
-            //    NotificationActivityID_Default,
-            //    NextCardDeck);
-        }
+       }
 
         private bool GameOver()
         {
@@ -125,8 +114,6 @@ namespace Xa11ytaire
         }
 
         // A card in one of the Target Card piles has been checked.
-
-
         private void TargetPile_Toggled(object sender, ToggledEventArgs e)
         {
             // No action required if button's being toggled off.
@@ -199,7 +186,6 @@ namespace Xa11ytaire
                     DeselectDealtCards();
                     UncheckToggleButtons(true);
 
-                    PlaySound(false);
                     return;
                 }
 
@@ -256,16 +242,9 @@ namespace Xa11ytaire
 
                     RaiseNotificationEvent(
                          announcement);
-
-                    PlaySound(true);
-                }
-                else
-                {
-                    PlaySound(false);
                 }
             }
 
-            // XBarker:
             UncheckToggleButtons(true);
         }
 
@@ -322,14 +301,6 @@ namespace Xa11ytaire
                 for (int i = 0; i < cCardPiles; ++i)
                 {
                     ListView list = (ListView)CardPileGrid.FindByName("CardPile" + (i + 1));
-
-                    // XBarker:
-                    //if (list.Items.Contains(cardDestination))
-                    //{
-                    //    cardDestination.ListIndex = (i + 1);
-
-                    //    break;
-                    //}
                 }
             }
 
@@ -349,8 +320,6 @@ namespace Xa11ytaire
 
             bool setButtonVisuals = false;
 
-            // XBarker:
-            //var resourceLoader = new Windows.ApplicationModel.Resources.ResourceLoader();
             string inDealtCardPile = Resource1.InDealtCardPile;
             string revealedString = Resource1.Revealed;
 
@@ -375,7 +344,6 @@ namespace Xa11ytaire
                         DeselectDealtCards();
                         UncheckToggleButtons(true);
 
-                        PlaySound(false);
                         return;
                     }
 
@@ -415,8 +383,6 @@ namespace Xa11ytaire
                         _targetPiles[targetListIndex].Add(newCard);
 
                         setButtonVisuals = true;
-
-                        PlaySound(true);
 
                         // Now take action to apparently remove the source card from the Dealt Pile list.
 
@@ -523,27 +489,17 @@ namespace Xa11ytaire
                             cardRevealedAnnouncement = cardAbove.Name;
 
                             setButtonVisuals = true;
-
-                            PlaySound(true);
                         }
                         else
                         {
                             DeselectDealtCards();
                             UncheckToggleButtons(true);
-
-                            // illegal move
-                            // you can only put the next sequential card on the pile
-                            PlaySound(false);
                         }
                     }
                     else
                     {
                         DeselectDealtCards();
                         UncheckToggleButtons(true);
-
-                        // illegal move
-                        // attempted to move a card that was not in the right order
-                        PlaySound(false);
                     }
 
                     ClearListSelection(list);
@@ -577,13 +533,6 @@ namespace Xa11ytaire
 
                         RaiseNotificationEvent(
                              announcement);
-
-                        //RaiseNotificationEvent(
-                        //     AutomationNotificationKind.ItemAdded,
-                        //     AutomationNotificationProcessing.ImportantAll,
-                        //     ttsText,
-                        //     NotificationActivityID_Default,
-                        //     NextCardDeck);
                     }
 
                     btn.IsToggled = false;
@@ -625,20 +574,7 @@ namespace Xa11ytaire
             }
         }
 
-        // Barker: Interesting to consider whether a Tapped handler on the 
-        // dealt card piles ListViews might easily enable a card deselect
-        // on tap. Doesn't really seem tat that's the case though. (If this
-        // is revisited, I need to check the Tapped handler gets called for
-        // all of touch/mouse/switch/voice/etc.)
-
-        //private void CardPile_Tapped(object sender, ItemTappedEventArgs e)
-        //{
-        //    var tappedCard = e.Item as PlayingCard;
-
-        //}
-
         // The selection state of one of the card in the Dealt Card piles has changed.
-
         private void CardPile_SelectionChanged(object sender, SelectedItemChangedEventArgs e)
         {
             // Only take action when a card has been selected.
@@ -650,19 +586,7 @@ namespace Xa11ytaire
                 return;
             }
 
-            // XBarker:
-            //if (e.AddedItems.Count == 0)
-            //{
-            //    return;
-            //}
-
-            // Always deselect the target card piles.
-
-            // XBarker:
-            // UncheckToggleButtons(false /* include upturned card. */);
-
             // Is this an "empty" card pile?
-
             var items = listSelectionChanged.ItemsSource as ObservableCollection<PlayingCard>;
 
             // Barker: Tidy this up...
@@ -730,55 +654,35 @@ namespace Xa11ytaire
 
                     UncheckToggleButtons(true);
 
-                    PlaySound(true);
-
-                    cardHasBeenMoved = true;
-
                     ClearListSelection(listSelectionChanged);
-
-                    // Make sure focus is on the CardPile list.
-                    FocusLastItemInList(listSelectionChanged);
 
                     // Moving upturned card to a dealt card pile list.
                     SetStateDealtCardPiles();
                 }
                 else
                 {
-                    PlaySound(false);
-
                     DeselectDealtCards();
                     UncheckToggleButtons(true);
 
                     ClearListSelection(listSelectionChanged);
                 }
 
-                // XBarker:
-                // LookForAHint();
-
                 return;
             }
 
             // Are we trying to move a card from a Target Pile to this list?
-
             if (MoveTargetPileCardToCardPileAsAppropriate(listSelectionChanged))
             {
                 UncheckToggleButtons(true);
                 ClearListSelection(listSelectionChanged);
-
-                cardHasBeenMoved = true;
             }
             else
             {
                 MoveCardBetweenDealtCardPiles(listSelectionChanged);
-
-                cardHasBeenMoved = false;
             }
 
             // Moving either dealt card to target card to a dealt card pile list.
             SetStateDealtCardPiles();
-
-            // XBarker:
-            // LookForAHint();
         }
 
         private void EmptyCardItem_Select(ListView listTarget)
@@ -790,7 +694,7 @@ namespace Xa11ytaire
                 return;
             }
 
-            cardHasBeenMoved = false;
+            bool movedCard = false;
 
             // Consider moving the upturned card to this Card Pile.
             if ((CardDeckUpturned.IsToggled) && (_deckUpturned.Count > 0))
@@ -816,17 +720,8 @@ namespace Xa11ytaire
 
                     SetStateDealtCardPiles();
 
-                    PlaySound(true);
-                    cardHasBeenMoved = true;
+                    movedCard = true;
                 }
-                else
-                {
-                    PlaySound(false);
-                }
-
-                FocusLastItemInList(listTarget);
-
-                //listTarget.Focus(FocusState.Keyboard);
             }
             else
             {
@@ -950,25 +845,16 @@ namespace Xa11ytaire
                             ClearListSelection(list);
                             ClearListSelection(listTarget);
 
-                            FocusLastItemInList(listTarget);
-
                             SetStateDealtCardPiles();
 
-                            // listTarget.Focus(FocusState.Keyboard);
-
-                            PlaySound(true);
-                            cardHasBeenMoved = true;
-                        }
-                        else
-                        {
-                            PlaySound(false);
+                            movedCard = true;
                         }
                     }
                 }
             }
 
             // Did we move a card to the empty slot?
-            if (!cardHasBeenMoved)
+            if (!movedCard)
             {
                 // No, so there's no need to leave the empty slot selected.
                 // First unselect the PlayingCard that is the empty slot.
@@ -1073,8 +959,6 @@ namespace Xa11ytaire
                         UncheckToggleButtons(false);
                     }
                 }
-
-                //FocusLastItemInList(listCardPile);
             }
 
             return movedCard;
@@ -1239,18 +1123,8 @@ namespace Xa11ytaire
                                 itemsRemoved.Add(cardNowTop);
                             }
 
-                            // setting the SelectItem here to null
-                            // so that it doesn't trigger another pass through 
-                            // CardPile_SelectionChanged as that was causing
-                            // the failure sound to hit, as well as the success sound later
-
                             ClearListSelection(list);
                             ClearListSelection(listSelectionChanged);
-
-                            FocusLastItemInList(listSelectionChanged);
-
-                            PlaySound(true);
-                            cardHasBeenMoved = true;
 
                             // Have screen readers make a related announcement.
                             var sourceItemsCount = itemsRemoved.Count;
@@ -1275,11 +1149,6 @@ namespace Xa11ytaire
                                      announcement);
                             }
                         }
-                        else if (!cardHasBeenMoved)
-                        {
-                            PlaySound(false);
-                            cardHasBeenMoved = false;
-                        }
 
                         ClearListSelection(list);
                         ClearListSelection(listSelectionChanged);
@@ -1300,17 +1169,6 @@ namespace Xa11ytaire
 
                     }
                 }
-
-                // When the app starts, the height of the ScrollViewer containing the dealt card piles,
-                // is not always as high as expected. Until the cause of this is understood, explicitly
-                // resize the UI on the first attempt to move a card here, now that all elements have 
-                // their actual heights calculated. Barker: Figure out this, and remove the resize here.
-                //if (firstMoveToDealtCardPile)
-                //{
-                //    firstMoveToDealtCardPile = false;
-
-                //    SetCardPileSize();
-                //}
             }
 
             if (!foundOtherDealtCardPileSelected)
@@ -1319,160 +1177,7 @@ namespace Xa11ytaire
                 var cardSelected = listSelectionChanged.SelectedItem as PlayingCard;
                 var announcement = cardSelected.Name + " " + Resource1.Selected;
                 RaiseNotificationEvent(announcement);
-
-                // A dealt card was selected, but no available move was found, and no other
-                // dealt card pile was found to be selected. So check if we should move with 
-                // only this card selection.
-                if (this.ViewModel.SingleKeyToMove)
-                {
-                    MoveDealtCardWithSingleKeyPressIfPossible(listSelectionChanged);
-                }
             }
-        }
-
-        // XBarker:
-        private bool _inMoveDealtCardWithSingleKeyPressIfPossible = false;
-
-        // XBarker:
-
-        private void MoveDealtCardWithSingleKeyPressIfPossible(ListView listSelectionChanged)
-        {
-
-            //if (_dealingCards || _inMoveDealtCardWithSingleKeyPressIfPossible)
-            //{
-            //    return;
-            //}
-
-            //_inMoveDealtCardWithSingleKeyPressIfPossible = true;
-
-            //PlayingCard selectedDealtCard = listSelectionChanged.SelectedItem as PlayingCard;
-
-            //bool moveCardToTargetPile = false;
-
-            //CardPileToggleButton targetCardButton = null;
-
-            //if (selectedDealtCard.Suit == Suit.Clubs)
-            //{
-            //    targetCardButton = TargetPileC;
-            //}
-            //else if (selectedDealtCard.Suit == Suit.Diamonds)
-            //{
-            //    targetCardButton = TargetPileD;
-            //}
-            //else if (selectedDealtCard.Suit == Suit.Hearts)
-            //{
-            //    targetCardButton = TargetPileH;
-            //}
-            //else if (selectedDealtCard.Suit == Suit.Spades)
-            //{
-            //    targetCardButton = TargetPileS;
-            //}
-
-            //if (targetCardButton != null)
-            //{
-            //    if (targetCardButton.Card == null)
-            //    {
-            //        moveCardToTargetPile = (selectedDealtCard.Card.Rank == 1);
-            //    }
-            //    else
-            //    {
-            //        moveCardToTargetPile = (selectedDealtCard.Card.Rank == targetCardButton.Card.Rank + 1);
-            //    }
-            //}
-
-            //if (moveCardToTargetPile)
-            //{
-            //    MoveDealtCardToTargetPileAsAppropriate(targetCardButton);
-            //}
-            //else
-            //{
-            //    bool moveCardToDealtCardPile = false;
-
-            //    for (int i = 0; i < cCardPiles; i++)
-            //    {
-            //        ListView list = (ListView)CardPileGrid.FindByName("CardPile" + (i + 1));
-            //        if (list.Items.Count > 0)
-            //        {
-            //            PlayingCard topCardInDealtCardPile = (list.Items[list.Items.Count - 1] as PlayingCard);
-
-            //            if (topCardInDealtCardPile.CardState == CardState.KingPlaceHolder)
-            //            {
-            //                // Move a King to the empty pile.
-            //                moveCardToDealtCardPile = (selectedDealtCard.Card.Rank == 13);
-            //            }
-            //            else
-            //            {
-            //                if (CanMoveCard(topCardInDealtCardPile, selectedDealtCard))
-            //                {
-            //                    moveCardToDealtCardPile = true;
-            //                }
-            //            }
-
-            //            if (moveCardToDealtCardPile)
-            //            {
-            //                list.SelectedIndex = list.Items.Count - 1;
-
-            //                break;
-            //            }
-            //        }
-            //    }
-            //}
-
-            //_inMoveDealtCardWithSingleKeyPressIfPossible = false;
-        }
-
-        // XBarker:
-        private void FocusLastItemInList(ListView list)
-        {
-            //int cItems = list.Items.Count;
-            //if (cItems > 0)
-            //{
-            //    list.SelectedIndex = cItems - 1;
-            //    ClearListSelection(list);
-            //}
-        }
-
-        // The AccessKey for a Dealt Card pile list has been triggered. So select and focus the last 
-        // item in the associated list.
-
-        // XBarker:
-
-        //private void CardPile_AccessKeyInvoked(UIElement sender, AccessKeyInvokedEventArgs args)
-        //{
-        //    ListView list = sender as ListView;
-        //    if (list != null)
-        //    {
-        //        if (list.Items.Count > 0)
-        //        {
-        //            list.Focus(FocusState.Keyboard);
-
-        //            list.SelectedIndex = list.Items.Count - 1;
-        //        }
-        //    }
-        //}
-
-        // XBarker:
-        private void PlaySound(bool success)
-        {
-            //if (PlaySoundEffectsCheckBox.IsChecked == true)
-            //{
-            //    notifications.PlaySound(success);
-            //}
-
-            //// If not success, clear all checked and selected elements.
-            //if (!success)
-            //{
-            //    CardDeckUpturned.IsChecked = false;
-
-            //    UncheckToggleButtons(true);
-
-            //    // Clear all selection from the card pile lists.
-            //    for (int i = 0; i < cCardPiles; i++)
-            //    {
-            //        ListView list = (ListView)CardPileGrid.FindByName("CardPile" + (i + 1));
-            //        ClearListSelection(list);
-            //    }
-            //}
         }
 
         private void ClearListSelection(ListView list)

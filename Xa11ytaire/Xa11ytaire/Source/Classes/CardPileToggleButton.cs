@@ -7,10 +7,9 @@ using Xamarin.Forms;
 
 namespace Xa11ytaire.Source.Classes
 {
-    // XBarker: This used to be the CardPileToggleButton.
     public class CardPileToggleButton : ImageButton, INotifyPropertyChanged
     {
-        // XBarker: This first stuff turns a Button into a toggleable button.
+        // Barker: This first stuff turns a Button into a toggleable button.
         public event EventHandler<ToggledEventArgs> Toggled;
 
         public static BindableProperty IsToggledProperty =
@@ -49,8 +48,6 @@ namespace Xa11ytaire.Source.Classes
             VisualStateManager.GoToState(toggleButton, isToggled ? "ToggledOn" : "ToggledOff");
         }
 
-        // XBarker: Test
-
         public static readonly BindableProperty NameProperty = 
             BindableProperty.Create(
                 "Name",
@@ -59,6 +56,7 @@ namespace Xa11ytaire.Source.Classes
                 null,
                 BindingMode.OneWay
         );
+
         public string Name
         {
             get
@@ -74,7 +72,7 @@ namespace Xa11ytaire.Source.Classes
         }
 
 
-        // Xbarker: Now back to the original CardPileToggleButton stuff.
+        // Barker: Now back to the original CardPileToggleButton stuff.
 
         private Card card;
         private Suit suit;
