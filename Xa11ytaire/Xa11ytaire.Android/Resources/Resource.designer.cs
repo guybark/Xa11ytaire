@@ -26,7 +26,6 @@ namespace Xa11ytaire.Droid
 		
 		public static void UpdateIdValues()
 		{
-			global::Plugin.LocalNotifications.Resource.Drawable.plugin_lc_smallicon = global::Xa11ytaire.Droid.Resource.Drawable.plugin_lc_smallicon;
 			global::Xamarin.Forms.Platform.Android.Resource.Animation.abc_fade_in = global::Xa11ytaire.Droid.Resource.Animation.abc_fade_in;
 			global::Xamarin.Forms.Platform.Android.Resource.Animation.abc_fade_out = global::Xa11ytaire.Droid.Resource.Animation.abc_fade_out;
 			global::Xamarin.Forms.Platform.Android.Resource.Animation.abc_grow_fade_in_from_bottom = global::Xa11ytaire.Droid.Resource.Animation.abc_grow_fade_in_from_bottom;
@@ -5598,26 +5597,26 @@ namespace Xa11ytaire.Droid
 			// aapt resource value: 0x7f020054
 			public const int avd_hide_password = 2130837588;
 			
+			// aapt resource value: 0x7f02016f
+			public const int avd_hide_password_1 = 2130837871;
+			
 			// aapt resource value: 0x7f020170
-			public const int avd_hide_password_1 = 2130837872;
+			public const int avd_hide_password_2 = 2130837872;
 			
 			// aapt resource value: 0x7f020171
-			public const int avd_hide_password_2 = 2130837873;
-			
-			// aapt resource value: 0x7f020172
-			public const int avd_hide_password_3 = 2130837874;
+			public const int avd_hide_password_3 = 2130837873;
 			
 			// aapt resource value: 0x7f020055
 			public const int avd_show_password = 2130837589;
 			
+			// aapt resource value: 0x7f020172
+			public const int avd_show_password_1 = 2130837874;
+			
 			// aapt resource value: 0x7f020173
-			public const int avd_show_password_1 = 2130837875;
+			public const int avd_show_password_2 = 2130837875;
 			
 			// aapt resource value: 0x7f020174
-			public const int avd_show_password_2 = 2130837876;
-			
-			// aapt resource value: 0x7f020175
-			public const int avd_show_password_3 = 2130837877;
+			public const int avd_show_password_3 = 2130837876;
 			
 			// aapt resource value: 0x7f020056
 			public const int cardback = 2130837590;
@@ -6405,11 +6404,11 @@ namespace Xa11ytaire.Droid
 			// aapt resource value: 0x7f02015b
 			public const int notification_icon_background = 2130837851;
 			
-			// aapt resource value: 0x7f02016e
-			public const int notification_template_icon_bg = 2130837870;
+			// aapt resource value: 0x7f02016d
+			public const int notification_template_icon_bg = 2130837869;
 			
-			// aapt resource value: 0x7f02016f
-			public const int notification_template_icon_low_bg = 2130837871;
+			// aapt resource value: 0x7f02016e
+			public const int notification_template_icon_low_bg = 2130837870;
 			
 			// aapt resource value: 0x7f02015c
 			public const int notification_tile_bg = 2130837852;
@@ -6418,52 +6417,49 @@ namespace Xa11ytaire.Droid
 			public const int notify_panel_notification_icon_bg = 2130837853;
 			
 			// aapt resource value: 0x7f02015e
-			public const int plugin_lc_smallicon = 2130837854;
+			public const int spadesace = 2130837854;
 			
 			// aapt resource value: 0x7f02015f
-			public const int spadesace = 2130837855;
+			public const int spadeseight = 2130837855;
 			
 			// aapt resource value: 0x7f020160
-			public const int spadeseight = 2130837856;
+			public const int spadesfive = 2130837856;
 			
 			// aapt resource value: 0x7f020161
-			public const int spadesfive = 2130837857;
+			public const int spadesfour = 2130837857;
 			
 			// aapt resource value: 0x7f020162
-			public const int spadesfour = 2130837858;
+			public const int spadesjack = 2130837858;
 			
 			// aapt resource value: 0x7f020163
-			public const int spadesjack = 2130837859;
+			public const int spadesking = 2130837859;
 			
 			// aapt resource value: 0x7f020164
-			public const int spadesking = 2130837860;
+			public const int spadesnine = 2130837860;
 			
 			// aapt resource value: 0x7f020165
-			public const int spadesnine = 2130837861;
+			public const int spadesqueen = 2130837861;
 			
 			// aapt resource value: 0x7f020166
-			public const int spadesqueen = 2130837862;
+			public const int spadesseven = 2130837862;
 			
 			// aapt resource value: 0x7f020167
-			public const int spadesseven = 2130837863;
+			public const int spadessix = 2130837863;
 			
 			// aapt resource value: 0x7f020168
-			public const int spadessix = 2130837864;
+			public const int spadesten = 2130837864;
 			
 			// aapt resource value: 0x7f020169
-			public const int spadesten = 2130837865;
+			public const int spadesthree = 2130837865;
 			
 			// aapt resource value: 0x7f02016a
-			public const int spadesthree = 2130837866;
+			public const int spadestwo = 2130837866;
 			
 			// aapt resource value: 0x7f02016b
-			public const int spadestwo = 2130837867;
+			public const int tooltip_frame_dark = 2130837867;
 			
 			// aapt resource value: 0x7f02016c
-			public const int tooltip_frame_dark = 2130837868;
-			
-			// aapt resource value: 0x7f02016d
-			public const int tooltip_frame_light = 2130837869;
+			public const int tooltip_frame_light = 2130837868;
 			
 			static Drawable()
 			{

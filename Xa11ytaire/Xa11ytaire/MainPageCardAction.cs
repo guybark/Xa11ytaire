@@ -1564,9 +1564,9 @@ namespace Xa11ytaire
                 }
             }
 
-            AutomationProperties.SetHelpText(
-                DealtCardPileState,
-                stateMessage);
+            //AutomationProperties.SetHelpText(
+            //    DealtCardPileState,
+            //    stateMessage);
         }
 
         //private void SetStateDealtCardPiles()

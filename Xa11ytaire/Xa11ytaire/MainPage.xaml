@@ -80,7 +80,6 @@
                         </Image>
                     </StackLayout>
 
-                    <!--IsVisible="{Binding IsCardVisible, Mode=OneWay}"-->
                     <Frame 
                         BackgroundColor="{Binding FaceDown, Mode=OneWay,
                             Converter={StaticResource IsFaceDownToBackgroundColorConverter}}" 
@@ -112,10 +111,6 @@
 
             <!--The approach for localization here was following the steps at:
             https://docs.microsoft.com/en-us/xamarin/xamarin-forms/app-fundamentals/localization/text?tabs=windows#localizing-xaml-->
-
-            <!--Source="Assets/Images/cardback.png"-->
-            <!--Source="{Binding RemainingCardPileImage, Mode=OneWay}"-->
-            <!--AutomationProperties.Name="{i18n:TranslateExtension Text=NextCard}"-->
 
             <!-- Remaining card pile. -->
             <Grid Margin="0" Padding="0" x:Name="NextCardPileGrid">
@@ -176,9 +171,6 @@
                     <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
 
-                <!-- Show the status of Azure speech input. -->
-                <!--<Label Grid.ColumnSpan="4" x:Name="SpeechInputStatus"/>-->
-
                 <local_classes:CardPileToggleButton Grid.Column="0" x:Name="TargetPileC" x:Uid="TargetPileC"
                     Suit="Clubs" 
                     Aspect="Fill"
@@ -216,14 +208,21 @@
         <Grid Grid.Row="1">
 
             <StackLayout>
-                <Label x:Name="DealtCardPileState" 
+                
+                <!--<Label x:Name="DealtCardPileState" 
                     AutomationProperties.IsInAccessibleTree="True"
                     WidthRequest="1" MinimumWidthRequest="1"
                     HeightRequest="1" MinimumHeightRequest="1"
-                    Text="Dealt cards state" />
+                    Text="Dealt cards state" />-->
 
                 <!-- Dealt cards pile. -->
                 <Grid x:Name="CardPileGrid">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="auto" />
@@ -234,60 +233,43 @@
                         <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
 
-                    <Grid Grid.Row="0" Grid.Column="0" 
-                        x:Name="CardPile1Container">
+                    <ListView Grid.Row="0" Grid.Column="0"
+                        x:Name="CardPile1" x:Uid="CardPile1" 
+                        RowHeight="-1" Margin="0"
+                        AutomationProperties.Name="{i18n:TranslateExtension Text=Pile1}" ItemTemplate="{StaticResource PlayingCardListViewTemplate}" 
+                        ItemSelected="CardPile_SelectionChanged" HasUnevenRows="True">
+                    </ListView>
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="auto" />
-                        </Grid.RowDefinitions>
-
-                        <ListView Grid.Row="0" x:Name="CardPile1" x:Uid="CardPile1" 
-                            RowHeight="-1" Margin="0"
-                            AutomationProperties.Name="{i18n:TranslateExtension Text=Pile1}" ItemTemplate="{StaticResource PlayingCardListViewTemplate}" 
-                            ItemSelected="CardPile_SelectionChanged" HasUnevenRows="True">
-                        </ListView>
-
-                        <!-- Note that the buttons showing glyphs don't set a large font,
-                            as this results in a lot of whitespace above and below the 
-                            glyph in the button. But this means the glyph in the default
-                            font is way smaller than I'd like it to be. -->
-                        
-                        <Button Grid.Row="1"
-                            x:Name="SuggestionContainer"  
-                            IsVisible="False"
-                            Text="&#x003F;"
-                            AutomationProperties.Name="Suggestion" 
-                            Clicked="SuggestionsButton_Clicked" 
-                            Margin="0" Padding="0" />                                    
-
-                    </Grid>
-
-                    <ListView x:Name="CardPile2" x:Uid="CardPile2" Grid.Row="0" Grid.Column="1" RowHeight="-1"
+                    <ListView x:Name="CardPile2" x:Uid="CardPile2" 
+                        Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" RowHeight="-1"
                         AutomationProperties.Name="{i18n:TranslateExtension Text=Pile2}" ItemTemplate="{StaticResource PlayingCardListViewTemplate}" 
                         Margin="0" 
                         ItemSelected="CardPile_SelectionChanged" HasUnevenRows="True">
                     </ListView>
 
-                    <ListView x:Name="CardPile3" x:Uid="CardPile3" Grid.Row="0" Grid.Column="2" RowHeight="-1"
+                    <ListView x:Name="CardPile3" x:Uid="CardPile3" 
+                        Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" RowHeight="-1"
                         AutomationProperties.Name="{i18n:TranslateExtension Text=Pile3}" ItemTemplate="{StaticResource PlayingCardListViewTemplate}" 
                         Margin="0"                      
                         ItemSelected="CardPile_SelectionChanged" HasUnevenRows="True">
                     </ListView>
 
-                    <ListView x:Name="CardPile4" x:Uid="CardPile4" Grid.Row="0" Grid.Column="3" RowHeight="-1"
+                    <ListView x:Name="CardPile4" x:Uid="CardPile4" 
+                        Grid.Row="0" Grid.RowSpan="2" Grid.Column="3" RowHeight="-1"
                         AutomationProperties.Name="{i18n:TranslateExtension Text=Pile4}" ItemTemplate="{StaticResource PlayingCardListViewTemplate}" 
                         Margin="0"                       
                         ItemSelected="CardPile_SelectionChanged" HasUnevenRows="True">
                     </ListView>
 
-                    <ListView x:Name="CardPile5" x:Uid="CardPile5" Grid.Row="0" Grid.Column="4" RowHeight="-1"
+                    <ListView x:Name="CardPile5" x:Uid="CardPile5" 
+                        Grid.Row="0" Grid.RowSpan="2" Grid.Column="4" RowHeight="-1"
                         AutomationProperties.Name="{i18n:TranslateExtension Text=Pile5}" ItemTemplate="{StaticResource PlayingCardListViewTemplate}" 
                         Margin="0"                       
                         ItemSelected="CardPile_SelectionChanged" HasUnevenRows="True">
                     </ListView>
 
-                    <ListView x:Name="CardPile6" x:Uid="CardPile6" Grid.Row="0" Grid.Column="5" 
+                    <ListView x:Name="CardPile6" x:Uid="CardPile6" 
+                        Grid.Row="0" Grid.RowSpan="2" Grid.Column="5" 
                         RowHeight="-1"
                         AutomationProperties.Name="{i18n:TranslateExtension Text=Pile6}" 
                         ItemTemplate="{StaticResource PlayingCardListViewTemplate}"
@@ -295,63 +277,68 @@
                         ItemSelected="CardPile_SelectionChanged" HasUnevenRows="True">
                     </ListView>
 
-                    <Grid Grid.Row="0" Grid.Column="6" 
-                        x:Name="CardPile7Container">
+                    <ListView x:Name="CardPile7" x:Uid="CardPile7" 
+                        Grid.Row="0" Grid.RowSpan="1" Grid.Column="6" 
+                        RowHeight="-1"
+                        AutomationProperties.Name="{i18n:TranslateExtension Text=Pile7}" 
+                        ItemTemplate="{StaticResource PlayingCardListViewTemplate}"
+                        Margin="0"
+                        ItemSelected="CardPile_SelectionChanged" HasUnevenRows="True">
+                    </ListView>
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="auto" />
-                        </Grid.RowDefinitions>
+                    <!-- Note that the buttons showing glyphs don't set a large font,
+                        as this results in a lot of whitespace above and below the 
+                        glyph in the button. But this means the glyph in the default
+                        font is way smaller than I'd like it to be. -->
 
-                        <ListView Grid.Row="0" x:Name="CardPile7" x:Uid="CardPile7" 
-                            RowHeight="-1"
-                            AutomationProperties.Name="{i18n:TranslateExtension Text=Pile7}" 
-                            ItemTemplate="{StaticResource PlayingCardListViewTemplate}"
-                            Margin="0"                       
-                            ItemSelected="CardPile_SelectionChanged" HasUnevenRows="True">
-                        </ListView>
+                    <Button Grid.Row="1" Grid.Column="0"
+                        x:Name="SuggestionButton"
+                        HeightRequest="50"
+                        IsVisible="False"
+                        Text="&#x003F;"
+                        Padding="0" Margin="0"
+                        FontAttributes="Bold"
+                        FontSize="Medium"
+                        AutomationProperties.Name="Suggestion" 
+                        Clicked="SuggestionsButton_Clicked" />
 
-                        <Grid Grid.Row="1" Padding="0" Margin="0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
+                    <Grid Grid.Row="1" Grid.Column="6" 
+                        x:Name="ButtonsContainer"
+                        ColumnSpacing="0" RowSpacing="0"
+                        HeightRequest="50"
+                        Padding="0" Margin="0">
+                        
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
 
-                            <!-- The specific paddings reduce the space in the buttons
-                                around the glyph. In tests, the negative margins seem
-                                the only way to reduce unexpected space between the buttons. -->
+                        <!-- In tests, the negative margins seem
+                            the only way to reduce unexpected space 
+                            between the buttons. -->
                          
-                            <Button Grid.Column="0" 
-                                Text="&#x2699;" FontAttributes="Bold"
-                                AutomationProperties.Name="Settings" 
-                                Clicked="SettingsButton_Clicked" 
-                                Margin="-2,0,-4,0" Padding="0,-20,0,-20" />
+                        <Button Grid.Column="0" 
+                            Text="&#x2699;"
+                            FontAttributes="Bold"
+                            FontSize="Medium"
+                            AutomationProperties.Name="Settings" 
+                            Padding="0" Margin="-2"
+                            Clicked="SettingsButton_Clicked" />
 
-                            <!-- The paddings helps to center the glyph in the button,
-                                and works fine at different font sizes. -->
+                        <!-- The paddings helps to center the glyph in the button,
+                            and works fine at different font/display sizes. -->
                             
-                            <Button Grid.Column="1" 
-                                Margin="-4,0,-2,0" Padding="0,0,0,6"
-                                Text="&#x21bb;" FontAttributes="Bold"
-                                AutomationProperties.Name="Restart" 
-                                Clicked="RestartButton_Clicked" /> 
-                        </Grid>
-                    </Grid> 
+                        <Button Grid.Column="1" 
+                            Text="&#x21bb;"
+                            AutomationProperties.Name="Restart" 
+                            FontAttributes="Bold"
+                            FontSize="Medium"
+                            Padding="0,0,2,4" Margin="-2"
+                            Clicked="RestartButton_Clicked" /> 
+                    </Grid>
                 </Grid>
             </StackLayout>
             
-            <!--<StackLayout Orientation="Horizontal" Margin="0,0,0,10">-->
-            <!--<Button Text="&#x21bb;" FontSize="Large" FontAttributes="Bold"
-                AutomationProperties.Name="Restart" 
-                    WidthRequest="50" HeightRequest="50"
-                    Clicked="RestartButton_Clicked" Margin="0,0,10,10"
-                    HorizontalOptions="End" />-->
-                <!--<Button x:Name="TakePhoto" Text="Move by image reco" Clicked="TakePhoto_Clicked" 
-                        BackgroundColor="White" />-->
-                <!--<Label x:Name="CardRecoStatus" Margin="20,0,0,0" WidthRequest="300" 
-                    TextColor="White" VerticalOptions="Center"/>
-            </StackLayout>-->
-
         </Grid>
 
     </Grid>

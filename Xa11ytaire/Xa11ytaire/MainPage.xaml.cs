@@ -82,7 +82,10 @@ namespace Xa11ytaire
                 _targetPiles[i] = new List<Card>();
             }
 
-            SuggestionContainer.IsVisible = settings.ShowSuggestionsButton;
+            SuggestionButton.IsVisible = settings.ShowSuggestionsButton;
+
+            Grid.SetRowSpan(CardPile1,
+                SuggestionButton.IsVisible ? 1 : 2);
 
             RestartGame(false);
         }
@@ -95,7 +98,10 @@ namespace Xa11ytaire
             // or following the Settings page being close.
 
             // Respect the current settings.
-            SuggestionContainer.IsVisible = settings.ShowSuggestionsButton;
+            SuggestionButton.IsVisible = settings.ShowSuggestionsButton;
+
+            Grid.SetRowSpan(CardPile1,
+                SuggestionButton.IsVisible ? 1 : 2);
         }
 
         private PlayingCard CreatePlayingCard()
@@ -209,13 +215,15 @@ namespace Xa11ytaire
 
             mostRecentDealtCardPileWidth = dealtCardPileWidth;
 
-            CardPile1Container.WidthRequest = dealtCardPileWidth;
+            CardPile1.WidthRequest = dealtCardPileWidth;
+            SuggestionButton.WidthRequest = dealtCardPileWidth;
             CardPile2.WidthRequest = dealtCardPileWidth;
             CardPile3.WidthRequest = dealtCardPileWidth;
             CardPile4.WidthRequest = dealtCardPileWidth;
             CardPile5.WidthRequest = dealtCardPileWidth;
             CardPile6.WidthRequest = dealtCardPileWidth;
-            CardPile7Container.WidthRequest = dealtCardPileWidth;
+            CardPile7.WidthRequest = dealtCardPileWidth;
+            ButtonsContainer.WidthRequest = dealtCardPileWidth;
 
             MainPage.LastCardHeight = (int)((dealtCardPileWidth * 346) / 259);
 

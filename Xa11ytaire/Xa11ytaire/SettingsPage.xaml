@@ -35,7 +35,7 @@
                         Text="Turn over remaining cards one at a time."
                         VerticalTextAlignment="Center" />
                 </StackLayout>
-                <StackLayout Grid.Row="2" Orientation="Horizontal" HeightRequest="60">
+                <StackLayout Grid.Row="2" Orientation="Horizontal" HeightRequest="90">
                     <CheckBox x:Name="IncludeRowNumberCheckBox" 
                         AutomationProperties.LabeledBy="IncludeRowNumberCheckBoxLabel"
                         WidthRequest="30"
