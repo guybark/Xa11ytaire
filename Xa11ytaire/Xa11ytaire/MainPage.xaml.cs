@@ -360,7 +360,12 @@ namespace Xa11ytaire
         private async void SuggestionsButton_Clicked(object sender, EventArgs e)
         {
             string suggestion;
-            if (!GetMoveSuggestion(out suggestion))
+
+            if (GameOver())
+            {
+                suggestion = "You've done brilliant and won the game! Why not have another game?";
+            }
+            else if (!GetMoveSuggestion(out suggestion))
             {
                 suggestion = "Sorry, I don't have a suggestion at the moment.";
             }
