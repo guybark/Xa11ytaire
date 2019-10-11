@@ -33,6 +33,9 @@ namespace Xa11ytaire.Droid
             settings.IncludeRowNumber =
                 (preferences.GetString("IncludeRowNumber", "off") == "on");
 
+            Settings.HideUI =
+                (preferences.GetString("HideUI", "off") == "on");
+
             return settings;
         }
 
@@ -51,6 +54,9 @@ namespace Xa11ytaire.Droid
 
             preferencesEditor.PutString("IncludeRowNumber",
                 settings.IncludeRowNumber ? "on" : "off");
+
+            preferencesEditor.PutString("HideUI",
+                Settings.HideUI ? "on" : "off");
 
             preferencesEditor.Commit();
         }

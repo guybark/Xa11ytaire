@@ -59,6 +59,8 @@ namespace Xa11ytaire
 
         private Settings settings;
 
+        private bool firstAppearing = true;
+
         public MainPage()
         {
             InitializeComponent();
@@ -93,6 +95,55 @@ namespace Xa11ytaire
 
             Grid.SetRowSpan(CardPile1,
                 SuggestionButton.IsVisible ? 1 : 2);
+
+            if (!firstAppearing)
+            {
+                Card card;
+
+                for (int i = 0; i < cCardPiles; i++)
+                {
+                    ListView list = (ListView)CardPileGrid.FindByName("CardPile" + (i + 1));
+                    var items = list.ItemsSource as ObservableCollection<PlayingCard>;
+
+                    for (int j = 0; j < items.Count; j++)
+                    {
+                        PlayingCard playingCard = (items[j] as PlayingCard);
+                        card = playingCard.Card;
+                        playingCard.Card = null;
+                        playingCard.Card = card;
+                    }
+                }
+
+                card = CardDeckUpturnedObscuredLower.Card;
+                CardDeckUpturnedObscuredLower.Card = null;
+                CardDeckUpturnedObscuredLower.Card = card;
+
+                card = CardDeckUpturnedObscuredHigher.Card;
+                CardDeckUpturnedObscuredHigher.Card = null;
+                CardDeckUpturnedObscuredHigher.Card = card;
+
+                card = CardDeckUpturned.Card;
+                CardDeckUpturned.Card = null;
+                CardDeckUpturned.Card = card;
+
+                card = TargetPileC.Card;
+                TargetPileC.Card = null;
+                TargetPileC.Card = card;
+
+                card = TargetPileD.Card;
+                TargetPileD.Card = null;
+                TargetPileD.Card = card;
+
+                card = TargetPileH.Card;
+                TargetPileH.Card = null;
+                TargetPileH.Card = card;
+
+                card = TargetPileS.Card;
+                TargetPileS.Card = null;
+                TargetPileS.Card = card;
+            }
+
+            firstAppearing = false;
         }
 
         private PlayingCard CreatePlayingCard()

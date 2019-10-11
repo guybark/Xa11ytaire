@@ -696,6 +696,8 @@ namespace Xa11ytaire
 
             bool movedCard = false;
 
+            var announcement = Resource1.Moved + " ";
+
             // Consider moving the upturned card to this Card Pile.
             if ((CardDeckUpturned.IsToggled) && (_deckUpturned.Count > 0))
             {
@@ -704,6 +706,8 @@ namespace Xa11ytaire
                 cardAbove.IsCardVisible = true;
                 cardAbove.CardState = CardState.FaceUp;
                 cardAbove.Card = _deckUpturned[_deckUpturned.Count - 1];
+
+                announcement += cardAbove.Name;
 
                 // Is the upturned card a King?
                 if (cardAbove.Card.Rank == 13)
@@ -734,6 +738,8 @@ namespace Xa11ytaire
                         PlayingCard cardAbove = (PlayingCard)list.SelectedItem;
                         if (cardAbove.Card.Rank == 13)
                         {
+                            announcement += cardAbove.Name;
+
                             var items = list.ItemsSource as ObservableCollection<PlayingCard>;
 
                             // A King is selected in the other Card Pile list.
@@ -870,6 +876,13 @@ namespace Xa11ytaire
 
                 // Next unselect the item in the list.
                 listTarget.SelectedItem = null;
+            }
+            else
+            {
+                announcement += " to empty slot.";
+
+                RaiseNotificationEvent(
+                     announcement);
             }
         }
 

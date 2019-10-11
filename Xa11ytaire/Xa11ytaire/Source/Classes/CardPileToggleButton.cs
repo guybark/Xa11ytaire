@@ -158,9 +158,13 @@ namespace Xa11ytaire.Source.Classes
             {
                 string cardAsset;
 
-                // Is this card pile empty?
-                if (this.Card == null)
+                if (Settings.HideUI)
                 {
+                    cardAsset = "unknown";
+                }
+                else if (this.Card == null)
+                {
+                    // This card pile is empty.
                     switch (this.Suit)
                     {
                         case Suit.Clubs:

@@ -147,86 +147,93 @@ namespace Xa11ytaire.Source.Classes
 
             string cardAsset;
 
-            switch (card.Suit)
+            if (Settings.HideUI)
             {
-                case Suit.Clubs:
-                    cardAsset = "clubs";
-                    break;
-
-                case Suit.Diamonds:
-                    cardAsset = "diamonds";
-                    break;
-
-                case Suit.Hearts:
-                    cardAsset = "hearts";
-                    break;
-
-                case Suit.Spades:
-                    cardAsset = "spades";
-                    break;
-
-                default:
-                    cardAsset = "";
-                    break;
+                cardAsset = "unknown";
             }
-
-            switch (card.Rank)
+            else
             {
-                case 1:
-                    cardAsset += "ace";
-                    break;
+                switch (card.Suit)
+                {
+                    case Suit.Clubs:
+                        cardAsset = "clubs";
+                        break;
 
-                case 2:
-                    cardAsset += "two";
-                    break;
+                    case Suit.Diamonds:
+                        cardAsset = "diamonds";
+                        break;
 
-                case 3:
-                    cardAsset += "three";
-                    break;
+                    case Suit.Hearts:
+                        cardAsset = "hearts";
+                        break;
 
-                case 4:
-                    cardAsset += "four";
-                    break;
+                    case Suit.Spades:
+                        cardAsset = "spades";
+                        break;
 
-                case 5:
-                    cardAsset += "five";
-                    break;
+                    default:
+                        cardAsset = "";
+                        break;
+                }
 
-                case 6:
-                    cardAsset += "six";
-                    break;
+                switch (card.Rank)
+                {
+                    case 1:
+                        cardAsset += "ace";
+                        break;
 
-                case 7:
-                    cardAsset += "seven";
-                    break;
+                    case 2:
+                        cardAsset += "two";
+                        break;
 
-                case 8:
-                    cardAsset += "eight";
-                    break;
+                    case 3:
+                        cardAsset += "three";
+                        break;
 
-                case 9:
-                    cardAsset += "nine";
-                    break;
+                    case 4:
+                        cardAsset += "four";
+                        break;
 
-                case 10:
-                    cardAsset += "ten";
-                    break;
+                    case 5:
+                        cardAsset += "five";
+                        break;
 
-                case 11:
-                    cardAsset += "jack";
-                    break;
+                    case 6:
+                        cardAsset += "six";
+                        break;
 
-                case 12:
-                    cardAsset += "queen";
-                    break;
+                    case 7:
+                        cardAsset += "seven";
+                        break;
 
-                case 13:
-                    cardAsset += "king";
-                    break;
+                    case 8:
+                        cardAsset += "eight";
+                        break;
 
-                default:
-                    cardAsset = "emptydealtcardpile";
-                    break;
+                    case 9:
+                        cardAsset += "nine";
+                        break;
+
+                    case 10:
+                        cardAsset += "ten";
+                        break;
+
+                    case 11:
+                        cardAsset += "jack";
+                        break;
+
+                    case 12:
+                        cardAsset += "queen";
+                        break;
+
+                    case 13:
+                        cardAsset += "king";
+                        break;
+
+                    default:
+                        cardAsset = "emptydealtcardpile";
+                        break;
+                }
             }
 
             if (string.IsNullOrEmpty(cardAsset))

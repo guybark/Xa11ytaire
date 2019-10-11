@@ -38,9 +38,14 @@ namespace Xa11ytaire
                 IncludeRowNumberCheckBox,
                 "Takes effect after the next game restart.");
 
+            AutomationProperties.SetName(
+                HideUICheckBox,
+                "Hide all the visuals in the game.");
+
             ShowSuggestionsButtonCheckBox.IsChecked = this.settings.ShowSuggestionsButton;
             TurnOverOneCardCheckBox.IsChecked = this.settings.TurnOverOneCard;
             IncludeRowNumberCheckBox.IsChecked = this.settings.IncludeRowNumber;
+            HideUICheckBox.IsChecked = Settings.HideUI;
         }
 
         private void ShowSuggestionsButtonCheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
@@ -56,6 +61,11 @@ namespace Xa11ytaire
         private void IncludeRowNumberCheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
         {
             this.settings.IncludeRowNumber = (sender as CheckBox).IsChecked;
+        }
+
+        private void HideUICheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
+        {
+            Settings.HideUI = (sender as CheckBox).IsChecked;
         }
 
         private async void CloseButton_Clicked(object sender, EventArgs e)

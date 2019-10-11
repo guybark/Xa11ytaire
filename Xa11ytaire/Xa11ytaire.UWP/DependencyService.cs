@@ -26,6 +26,7 @@ namespace Xa11ytaire.UWP
             settings.ShowSuggestionsButton = false;
             settings.TurnOverOneCard = false;
             settings.IncludeRowNumber = false;
+            settings.HideUI = false;
 
             if (Application.Current.Properties.ContainsKey("ShowSuggestionsButton"))
             {
@@ -42,6 +43,11 @@ namespace Xa11ytaire.UWP
                 settings.IncludeRowNumber = (bool)Application.Current.Properties["IncludeRowNumber"];
             }
 
+            if (Application.Current.Properties.ContainsKey("HideUI"))
+            {
+                settings.HideUI = (bool)Application.Current.Properties["HideUI"];
+            }
+
             return settings;
         }
 
@@ -55,6 +61,9 @@ namespace Xa11ytaire.UWP
 
             Application.Current.Properties["IncludeRowNumber"] =
                 settings.IncludeRowNumber;
+
+            Application.Current.Properties["HideUI"] =
+                settings.HideUI;
         }
 
         public void ScreenReaderAnnouncement(string notification)
